@@ -1,0 +1,19 @@
+[#ftl]
+<html>
+	<body style = "font-family: Verdana">
+			
+		<h1>${viewType}</h1>
+		<hr width = '95%' size = '5' color = '#270A33' align = 'center'>
+		
+		<p>
+			<blockquote>
+				<br/>
+				<style type='text/css'> form {display: inline;}</style>
+				<form action='http://localhost:8080/home'><input type='submit' value='Return Home' style = 'float: right'></form>
+				<form action='http://localhost:8080/home/view_lastname'><input type='submit' value='View By Last Name'style = 'float: right'></form>
+				<form action='http://localhost:8080/home/view_id'><input type='submit' value='View By ID' style = 'float: right'></form>
+				<form action='http://localhost:8080/home/view_age'><input type='submit' value='View By Age'style = 'float: right'></form>				
+			</blockquote>
+		</p>
+	</body>
+</html>
