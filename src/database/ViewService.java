@@ -23,42 +23,42 @@ import com.j256.simplewebframework.freemarker.ModelView;
 @Path("/home")
 public class ViewService {
 
-	private final StudentDatabaseWeb db;
+	private final DaoMain dao;
 
-	public ViewService(StudentDatabaseWeb db) {
-		this.db = db;
+	public ViewService(DaoMain dao) {
+		this.dao = dao;
 	}
 
 	
-	/**
-	 * Default page. View/Export student database by ID
-	 */
-	@Path("/view_id")
-	@GET
-	@WebMethod
-	public ModelView viewById() {
-		Map<String, Object> model = new HashMap<String, Object>();
-
-		model.put("viewType", "VIEW BY ID");
-		model.put("exportCsv", db.saveDataAsCsv());
-		model.put("listBy", db.getStudentListById());
-		return new ModelView(model, "/view.html");
-	}
-
-	/**
-	 * View/Export student database by last name
-	 */
-	@Path("/view_lastname")
-	@GET
-	@WebMethod
-	public ModelView viewByLastName() {
-		Map<String, Object> model = new HashMap<String, Object>();
-
-		model.put("viewType", "VIEW BY LAST NAME");
-		model.put("exportCsv", db.saveDataAsCsv());
-		model.put("listBy", db.getStudentListByLastName());
-		return new ModelView(model, "/view.html");
-	}
+//	/**
+//	 * Default page. View/Export student database by ID
+//	 */
+//	@Path("/view_id")
+//	@GET
+//	@WebMethod
+//	public ModelView viewById() {
+//		Map<String, Object> model = new HashMap<String, Object>();
+//
+//		model.put("viewType", "VIEW BY ID");
+//		model.put("exportCsv", db.saveDataAsCsv());
+//		model.put("listBy", db.getStudentListById());
+//		return new ModelView(model, "/view.html");
+//	}
+//
+//	/**
+//	 * View/Export student database by last name
+//	 */
+//	@Path("/view_lastname")
+//	@GET
+//	@WebMethod
+//	public ModelView viewByLastName() {
+//		Map<String, Object> model = new HashMap<String, Object>();
+//
+//		model.put("viewType", "VIEW BY LAST NAME");
+//		model.put("exportCsv", db.saveDataAsCsv());
+//		model.put("listBy", db.getStudentListByLastName());
+//		return new ModelView(model, "/view.html");
+//	}
 
 	/**
 	 * View/Export student database by age
@@ -70,8 +70,8 @@ public class ViewService {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		model.put("viewType", "VIEW BY AGE");
-		model.put("exportCsv", db.saveDataAsCsv());
-		model.put("listBy", db.getStudentListByAge());
+		//model.put("exportCsv", db.saveDataAsCsv());
+		model.put("listBy", dao.viewStudentsSorted("age"));
 		return new ModelView(model, "/view.html");
 	}
 

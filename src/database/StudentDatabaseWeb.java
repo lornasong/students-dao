@@ -20,16 +20,9 @@ public class StudentDatabaseWeb {
 
 	private final String schoolName;
 	private final List<Student> studentList = new ArrayList<Student>();
-	private DaoMain daoMain = new DaoMain();
-	
+		
 	public StudentDatabaseWeb(String schoolName) {
 		this.schoolName = schoolName;
-		try {
-			daoMain.doMain(null);
-		} catch (Exception e) {
-			System.out.println("Error: setting up dao main");
-			e.printStackTrace();
-		}
 	}
 
 	public String getSchoolName() {
@@ -46,8 +39,6 @@ public class StudentDatabaseWeb {
 	public String addStudent(String firstName, String lastName, int age) {
 		Student student = new Student(firstName, lastName, age);
 		studentList.add(student);
-		// use DAO to add student to db TODO
-		daoMain.addStudentToDatabase(student);
 		return student.toString() + " has been sucessfully added";
 	}
 
@@ -62,7 +53,7 @@ public class StudentDatabaseWeb {
 		// If ID field is provided, check only ID since ID is unique.
 		if (id > 0) {
 			for (Student student : studentList) {
-				if (student.getID() == id) {
+				if (student.getId() == id) {
 
 					return "<br/>" + student.toString();
 				}
@@ -119,7 +110,7 @@ public class StudentDatabaseWeb {
 			Student student = it.next();
 
 			// Student is in student array list
-			if (student.getID() == studentID) {
+			if (student.getId() == studentID) {
 				return student;
 			}
 		}
@@ -231,7 +222,7 @@ public class StudentDatabaseWeb {
 			out.println("ID,Student Name,Age");
 
 			for (Student s : studentList) {
-				out.println(s.getID() + "," + s.getFullName() + ", "
+				out.println(s.getId() + "," + s.getFullName() + ", "
 						+ s.getAge());
 			}
 
@@ -252,7 +243,7 @@ public class StudentDatabaseWeb {
 	 */
 	public int searchByFullName(String userInput) {
 		Student student = getStudentByFullName(userInput);
-		return student.getID();
+		return student.getId();
 	}
 
 	/**

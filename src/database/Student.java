@@ -23,11 +23,15 @@ public class Student {
 	private int studentId;//remove final for ORMLite
 	private static int nextId = 1;	
 	
-	@DatabaseField(canBeNull = false)
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME = "lastName";
+	public static final String AGE = "age";
+	
+	@DatabaseField(columnName = FIRST_NAME, canBeNull = false)
 	private String firstName;
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(columnName = LAST_NAME, canBeNull = false)
 	private String lastName;
-	@DatabaseField(canBeNull = false)
+	@DatabaseField(columnName = AGE, canBeNull = false)
 	private int age;
 	
 	Student(){
@@ -57,10 +61,12 @@ public class Student {
 		return firstName + " " + lastName;
 	}
 	
-	public int getID(){
+	public int getId(){
 		return studentId;
 	}
-	
+	public int getPKey(){
+		return pKey;
+	}
 	public void setFirstName(String newFirstName){
 		this.firstName = newFirstName;
 	}
@@ -108,6 +114,6 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return "ID: "  + getID() + " | Name: "+ getFullName() + " | Age: " + getAge();
+		return "ID: "  + getPKey() + " | Name: "+ getFullName() + " | Age: " + getAge();
 	}
 }

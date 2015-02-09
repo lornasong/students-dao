@@ -30,15 +30,16 @@ public class DatabaseWebMain {
 
 		
 		StudentDatabaseWeb database = new StudentDatabaseWeb("Your School");
+		DaoMain dao = new DaoMain();
+		dao.doMain(null);
 		
 		// create a service handler
 		ServiceHandler serviceHandler = new ServiceHandler();
 		
+		
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService(database));
-		serviceHandler.registerWebService(new ModifyService(database));
-		serviceHandler.registerWebService(new SearchService(database));
-		serviceHandler.registerWebService(new ViewService(database));
+		serviceHandler.registerWebService(new ModifyService(dao));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
@@ -51,6 +52,26 @@ public class DatabaseWebMain {
 		Configuration configuration = new Configuration();
 		displayer.setTemplateConfig(configuration);
 		serviceHandler.registerResultDisplayer(displayer);
+
+		
+		
+//		// register our service that handles requests from simple-web-framework
+//		serviceHandler.registerWebService(new HomeService(database));
+////		serviceHandler.registerWebService(new ModifyService(dao));
+////		serviceHandler.registerWebService(new SearchService(database));
+////		serviceHandler.registerWebService(new ViewService(dao));
+//		
+//		// register a displayer of String results
+//		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
+//		
+//		//Stuff for to use Freemarker instead of stringbuilding html
+//		//Has errors. Need to press forward twice. Page will render.
+//		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
+//		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
+//		displayer.setFileLocator(fileLocator);
+//		Configuration configuration = new Configuration();
+//		displayer.setTemplateConfig(configuration);
+//		serviceHandler.registerResultDisplayer(displayer);
 		
 		//Handlers
 		HandlerCollection handlers = new HandlerCollection();
