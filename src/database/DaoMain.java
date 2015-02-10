@@ -115,6 +115,12 @@ public class DaoMain {
 		return null;
 	}
 
+	/**
+	 * MODIFIES STUDENT information: first name, last name, age. Identify
+	 * student to modify by pKey. User submits new information for student. If
+	 * only one field has changed, include original information of fields that
+	 * have not changed.
+	 */
 	public String updateStudentInformation(int pKey, String newFirstName,
 			String newLastName, int newAge) {
 
@@ -122,7 +128,7 @@ public class DaoMain {
 		student.setFirstName(newFirstName);
 		student.setLastName(newLastName);
 		student.setAge(newAge);
-		
+
 		try {
 			studentDao.update(student);
 			return student.toString() + " has been updated.";
