@@ -12,21 +12,23 @@ import com.j256.ormlite.table.DatabaseTable;
  */
 @DatabaseTable(tableName = "student")
 public class Student {
-	
+
+	//Coumn names for querying
+	public static final String FIRST_NAME = "firstName";
+	public static final String LAST_NAME = "lastName";
+	public static final String AGE = "age";
+	public static final String PRIMARY_KEY = "pKey";
 
 	//Internal Id - primary key - for database
-	@DatabaseField(generatedId = true)
+	@DatabaseField(columnName = PRIMARY_KEY, generatedId = true)
 	private int pKey;
 
-	//External Id (like a sasid)
+	//External Id (like a sasid). Non-unique
 	@DatabaseField(index = true)
 	private int studentId;//remove final for ORMLite
 	private static int nextId = 1;	
 	
-	public static final String FIRST_NAME = "firstName";
-	public static final String LAST_NAME = "lastName";
-	public static final String AGE = "age";
-	
+	//Other columns
 	@DatabaseField(columnName = FIRST_NAME, canBeNull = false)
 	private String firstName;
 	@DatabaseField(columnName = LAST_NAME, canBeNull = false)

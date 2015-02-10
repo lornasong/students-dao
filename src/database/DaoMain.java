@@ -14,7 +14,6 @@ import com.j256.ormlite.table.TableUtils;
 public class DaoMain {
 
 	private final static String DATABASE_URL = "jdbc:mysql://localhost/student?user=root&password=";
-
 	private Dao<Student, Integer> studentDao;
 
 	public static void main(String[] args) throws Exception {
@@ -23,7 +22,7 @@ public class DaoMain {
 	}
 
 	/**
-	 * Connects to mySQL database.
+	 * CONNECTS to mySQL database.
 	 */
 	public void doMain(String[] args) throws Exception {
 		ConnectionSource connectionSource = null;
@@ -36,12 +35,13 @@ public class DaoMain {
 			setupDatabase(connectionSource);
 			System.out.println("\nCONNECTED!!\n");
 
-			//test methods:
-//			addStudentToDatabase("hello", "test", 4);
-//			addStudentToDatabase("bye", "trial", 2);
-//			addStudentToDatabase("lo", "tri", 4);
-//			System.out.println(viewStudentsSorted("age"));
-			System.out.println(queryByAge(4));
+			// test methods:
+			// addStudentToDatabase("hello", "test", 4);
+			// addStudentToDatabase("bye", "trial", 2);
+			// addStudentToDatabase("lo", "tri", 4);
+			// System.out.println(viewStudentsSorted("age"));
+			// System.out.println(queryByAge(3));
+			System.out.println(deleteStudentFromDatabase(4));
 
 		} finally {
 			// destroy the data source which should close underlying connections
@@ -52,44 +52,80 @@ public class DaoMain {
 	}
 
 	/**
-	 * Setup our database and DAOs
+	 * SET UP DAO and table if necessary.
 	 */
 	private void setupDatabase(ConnectionSource connectionSource)
 			throws Exception {
 
 		studentDao = DaoManager.createDao(connectionSource, Student.class);
 
-		// if you need to create the table. do this only first time.
-		//TableUtils.createTableIfNotExists(connectionSource, Student.class);
+		// Creates a table. Do this only first time.
+		// TableUtils.createTableIfNotExists(connectionSource, Student.class);
 	}
 
 	/**
-	 * Add a student tuple to database using First Name, Last Name, and age
+	 * ADDS A TUPLE into mySQL database for a student using first name, last
+	 * name, and age.
 	 */
 	public void addStudentToDatabase(String firstName, String lastName, int age) {
 
 		try {
 			studentDao.create(new Student(firstName, lastName, age));
 		} catch (SQLException e) {
-			System.out.println("Error: adding student");// know what you were
-														// doing when got this
-														// error
+			System.out.println("Error: adding student");
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Returns a string of students sorted by variable 'type.'
-	 * 
-	 * Type is sorting type. Options: 'age' or 'lastName'. All other strings for type will be
-	 * default to no sort (will return in order of database).
+	 * RETURNS STUDENT OBJECT given a particular primary key. Always returns one
+	 * student to be used for further methods.
+	 */
+	private Student getStudentByPKey(int pKey) {
+
+		QueryBuilder<Student, Integer> statementBuilder = studentDao
+				.queryBuilder();
+		try {
+			statementBuilder.where().like(Student.PRIMARY_KEY, pKey);
+			List<Student> studentList = studentDao.query(statementBuilder
+					.prepare());
+			return studentList.get(0);// Will always return one student in index
+										// 0
+
+		} catch (SQLException e) {
+			System.out.println("Error: querying age name");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * DELETES A STUDENT by using primary key to identify the particular student
+	 * needed to be deleted.
+	 */
+	public String deleteStudentFromDatabase(int pKey) {
+
+		try {
+			Student student = getStudentByPKey(pKey);
+			studentDao.delete(student);
+			return (student.toString() + " successfully deleted");
+
+		} catch (SQLException e) {
+			System.out.println("Error: unsuccessful deleting student");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * RETURNS LIST sorted by variable 'type.' Type options: 'age', 'lastName'
+	 * or default no sorting. List is in string formatted in HTML.
 	 */
 	public String viewStudentsSorted(String type) {
 		try {
 
 			// Get List of Students
 			List<Student> studentList = studentDao.queryForAll();
-
 
 			// Sort as necessary
 			if (type.equals("age")) {
@@ -109,61 +145,87 @@ public class DaoMain {
 		return null;
 
 	}
-	
-	public String queryByFirstName(String firstName){
-		QueryBuilder<Student, Integer> statementBuilder = studentDao.queryBuilder();
+
+	/**
+	 * SEARCHES FOR FIRST NAME and returns a string list of all matches that
+	 * include user's input. That is: %input%.
+	 */
+	public String queryByFirstName(String firstName) {
+		QueryBuilder<Student, Integer> statementBuilder = studentDao
+				.queryBuilder();
 		try {
-			
-			statementBuilder.where().like(Student.FIRST_NAME , "%" + firstName + "%");
-			List<Student> studentList = studentDao.query(statementBuilder.prepare());
-			
+
+			statementBuilder.where().like(Student.FIRST_NAME,
+					"%" + firstName + "%");
+			List<Student> studentList = studentDao.query(statementBuilder
+					.prepare());
 			return listToString(studentList);
+
 		} catch (SQLException e) {
 			System.out.println("Error: querying first name");
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public String queryByLastName(String lastName){
-		QueryBuilder<Student, Integer> statementBuilder = studentDao.queryBuilder();
+
+	/**
+	 * SEARCHES FOR LAST NAME and returns a string list of all matches that
+	 * include user's input. That is: %input%.
+	 */
+	public String queryByLastName(String lastName) {
+		QueryBuilder<Student, Integer> statementBuilder = studentDao
+				.queryBuilder();
 		try {
-			
-			statementBuilder.where().like(Student.LAST_NAME , "%" + lastName + "%");
-			List<Student> studentList = studentDao.query(statementBuilder.prepare());
-			
+
+			statementBuilder.where().like(Student.LAST_NAME,
+					"%" + lastName + "%");
+			List<Student> studentList = studentDao.query(statementBuilder
+					.prepare());
 			return listToString(studentList);
+
 		} catch (SQLException e) {
-			System.out.println("Error: querying first name");
+			System.out.println("Error: querying last name");
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public String queryByAge(int age){
-		QueryBuilder<Student, Integer> statementBuilder = studentDao.queryBuilder();
+
+	/**
+	 * SEARCHES FOR AGE and returns a string list of all exact matches to user's
+	 * input.
+	 */
+	public String queryByAge(int age) {
+		QueryBuilder<Student, Integer> statementBuilder = studentDao
+				.queryBuilder();
 		try {
-			
-			statementBuilder.where().like(Student.AGE , age);
-			List<Student> studentList = studentDao.query(statementBuilder.prepare());
-			
+
+			statementBuilder.where().like(Student.AGE, age);
+			List<Student> studentList = studentDao.query(statementBuilder
+					.prepare());
 			return listToString(studentList);
+
 		} catch (SQLException e) {
-			System.out.println("Error: querying first name");
+			System.out.println("Error: querying age name");
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	public String listToString(List<Student> studentList){
-		
+
+	/**
+	 * RETURNS STUDENTLIST AS STRING in html format. Loops through list. If list
+	 * is empty, returns specific message notifying user.
+	 */
+	private String listToString(List<Student> studentList) {
+
+		if (studentList.isEmpty()) {
+			return "No Students Match Your Search";
+		}
+
 		StringBuilder sb = new StringBuilder();
-		
 		for (Student s : studentList) {
 			sb.append(s.toString()).append("\n");
 		}
 
 		return sb.toString();
 	}
-
 }
