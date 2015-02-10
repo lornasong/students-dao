@@ -39,9 +39,7 @@ public class DaoMain {
 			// addStudentToDatabase("hello", "test", 4);
 			// addStudentToDatabase("bye", "trial", 2);
 			// addStudentToDatabase("lo", "tri", 4);
-			// System.out.println(viewStudentsSorted("age"));
-			// System.out.println(queryByAge(3));
-			System.out.println(deleteStudentFromDatabase(4));
+			System.out.println(updateStudentInformation(3, "lo", "yay", 6));
 
 		} finally {
 			// destroy the data source which should close underlying connections
@@ -112,6 +110,24 @@ public class DaoMain {
 
 		} catch (SQLException e) {
 			System.out.println("Error: unsuccessful deleting student");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public String updateStudentInformation(int pKey, String newFirstName,
+			String newLastName, int newAge) {
+
+		Student student = getStudentByPKey(pKey);
+		student.setFirstName(newFirstName);
+		student.setLastName(newLastName);
+		student.setAge(newAge);
+		
+		try {
+			studentDao.update(student);
+			return student.toString() + " has been updated.";
+		} catch (SQLException e) {
+			System.out.println("Error: student info failed to update");
 			e.printStackTrace();
 		}
 		return null;
