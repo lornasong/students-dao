@@ -146,7 +146,7 @@ public class StudentDatabaseWeb {
 	 * webpage.
 	 */
 	public String getStudentListById() {
-		Collections.sort(getStudentList(), new IdComparator());
+		//Collections.sort(getStudentList(), new IdComparator());
 		return getStudentListString();
 	}
 
@@ -155,7 +155,7 @@ public class StudentDatabaseWeb {
 	 * webpage.
 	 */
 	public String getStudentListByLastName() {
-		Collections.sort(getStudentList(), new LastNameComparator());
+		//Collections.sort(getStudentList(), new LastNameComparator());
 		return getStudentListString();
 	}
 
@@ -164,7 +164,7 @@ public class StudentDatabaseWeb {
 	 * webpage.
 	 */
 	public String getStudentListByAge() {
-		Collections.sort(getStudentList(), new AgeComparator());
+		//Collections.sort(getStudentList(), new AgeComparator());
 		return getStudentListString();
 	}
 

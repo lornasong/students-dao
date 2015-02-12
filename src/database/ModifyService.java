@@ -169,22 +169,15 @@ public class ModifyService {
 		// Search form
 		sb.append("<html>\n");
 		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("<br/>").append("EDIT")
-				.append("<br/>");
+		sb.append("<br/>").append("EDIT").append("<br/>");
 		sb.append(queryingParameters());
 
 		// Search results
 		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-
-		try {
-			sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
-					lastName, ageString)));
-			// idModify = idInt;
-			// sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
-
-		} catch (NumberFormatException nfe) {
-			sb.append("The ID is invalid");
-		}
+		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+				lastName, ageString)));
+		// idModify = idInt;
+		// sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
 
 		// Close
 		sb.append("</blockquote></font></html></body></p>\n");
@@ -245,7 +238,8 @@ public class ModifyService {
 	@Path("/remove")
 	@GET
 	@WebMethod
-	public String modifyRemoveStudent(@QueryParam("firstName") String firstName,
+	public String modifyRemoveStudent(
+			@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName,
 			@QueryParam("age") String ageString) {
 
@@ -253,24 +247,18 @@ public class ModifyService {
 
 		sb.append(modifyPageHeader());
 
-		//Search form
+		// Search form
 		sb.append("<html>\n");
 		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
 		sb.append("<br/>").append("REMOVE").append("<br/>");
 		sb.append(queryingParameters());
-		
-		//Search results
+
+		// Search results
 		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-
-		try {
-			sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
-					lastName, ageString)));
-			//idModify = idInt;
-			//sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
-
-		} catch (NumberFormatException nfe) {
-			sb.append("The ID is invalid");
-		}
+		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+				lastName, ageString)));
+		// idModify = idInt;
+		// sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
 
 		// Close
 		sb.append("</blockquote></font></html></body></p>\n");

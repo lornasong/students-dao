@@ -18,10 +18,10 @@ import javax.ws.rs.QueryParam;
 @Path("/home/search")
 public class SearchService {
 
-	private final StudentDatabaseWeb db;
+	private final DaoMain dao;
 
-	public SearchService(StudentDatabaseWeb db) {
-		this.db = db;
+	public SearchService(DaoMain dao) {
+		this.dao = dao;
 	}
 
 	/**
@@ -32,37 +32,35 @@ public class SearchService {
 	@Path("")
 	@GET
 	@WebMethod
-	public String search(@QueryParam("fullName") String fullName,
-			@QueryParam("id") String id) {
+	public String search(@QueryParam("firstName") String firstName, @QueryParam("lastName") String lastName,
+			@QueryParam("age") String ageString) {
 
 		StringBuilder sb = new StringBuilder();
-
+		
+		//Header
 		sb.append("<html>\n");
 		sb.append("<center><font face = 'verdana'><h1>").append("SEARCH")
 				.append("</h1></font></center>\n");
 		sb.append("<hr width = '95%' size = '5' color = '#270A33'/>\n");
 
-		sb.append("<body>\n");
-		sb.append("<p><font face = 'verdana'><blockquote><form>\n");
-		sb.append("Full Name: <input name='fullName' type='text'/>\n");
-		sb.append("ID: <input name='id' type='text'/>\n");
+		//Form
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+		sb.append("<body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("First Name: <input name='firstName' type='text'/>\n");
+		sb.append(tab).append(
+				"Last Name: <input name='lastName' type='text'/>\n");
+		sb.append(tab).append("Age: <input name='age' type='text'/>\n");
 		sb.append("<input type='submit' />\n");
+		sb.append("</body></html>\n");
+		
 
-		sb.append("<br/><br/>").append("Results: <br/>\n");
-
-		// Case that ID is empty. Query using full name
-		if (id != null && !id.trim().isEmpty()) {
-			try {
-				int idInt = Integer.parseInt(id);
-				sb.append(db.searchStudentByParameters(fullName, idInt));
-			} catch (NumberFormatException nfe) {
-				sb.append("The ID is invalid");
-			}
-
-		} else {
-			sb.append(db.searchStudentByParameters(fullName, 0));
-		}
-
+		//Results
+		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
+		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+				lastName, ageString)));
+		
+		//Close
 		sb.append("<br/></form>\n");
 		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>\n");
 		sb.append("</blockquote></font></p>\n</body>\n</html>\n");

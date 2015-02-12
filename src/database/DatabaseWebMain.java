@@ -38,7 +38,7 @@ public class DatabaseWebMain {
 		// register our service that handles requests from simple-web-framework
 //		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(dao));
-//		serviceHandler.registerWebService(new SearchService(database));
+		serviceHandler.registerWebService(new SearchService(dao));
 //		serviceHandler.registerWebService(new ViewService(dao));
 		
 		// register a displayer of String results
