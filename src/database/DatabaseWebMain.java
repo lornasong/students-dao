@@ -1,18 +1,17 @@
 package database;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
-import freemarker.template.Configuration;
-
 import com.j256.simplewebframework.displayer.StringResultDisplayer;
 import com.j256.simplewebframework.freemarker.FreemarkerHtmlDisplayer;
 import com.j256.simplewebframework.handler.ServiceHandler;
 import com.j256.simplewebframework.resource.FileLocator;
+
+import freemarker.template.Configuration;
 
 public class DatabaseWebMain {
 	
@@ -35,11 +34,12 @@ public class DatabaseWebMain {
 		
 		// create a service handler
 		ServiceHandler serviceHandler = new ServiceHandler();
-		
-		
+				
 		// register our service that handles requests from simple-web-framework
-		serviceHandler.registerWebService(new HomeService(database));
+//		serviceHandler.registerWebService(new HomeService(database));
 		serviceHandler.registerWebService(new ModifyService(dao));
+//		serviceHandler.registerWebService(new SearchService(database));
+//		serviceHandler.registerWebService(new ViewService(dao));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
@@ -52,26 +52,6 @@ public class DatabaseWebMain {
 		Configuration configuration = new Configuration();
 		displayer.setTemplateConfig(configuration);
 		serviceHandler.registerResultDisplayer(displayer);
-
-		
-		
-//		// register our service that handles requests from simple-web-framework
-//		serviceHandler.registerWebService(new HomeService(database));
-////		serviceHandler.registerWebService(new ModifyService(dao));
-////		serviceHandler.registerWebService(new SearchService(database));
-////		serviceHandler.registerWebService(new ViewService(dao));
-//		
-//		// register a displayer of String results
-//		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
-//		
-//		//Stuff for to use Freemarker instead of stringbuilding html
-//		//Has errors. Need to press forward twice. Page will render.
-//		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
-//		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
-//		displayer.setFileLocator(fileLocator);
-//		Configuration configuration = new Configuration();
-//		displayer.setTemplateConfig(configuration);
-//		serviceHandler.registerResultDisplayer(displayer);
 		
 		//Handlers
 		HandlerCollection handlers = new HandlerCollection();

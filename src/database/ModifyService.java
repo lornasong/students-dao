@@ -55,6 +55,51 @@ public class ModifyService {
 	}
 
 	/**
+	 * This is the search form with user input fields for First Name, Last Name,
+	 * and Age.
+	 */
+	public String queryingParametersRequired() {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("<html>\n");
+
+		// Query Fields: first name, last name, age
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+		sb.append("<body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("First Name: <input name='firstName' required type='text'/>\n");
+		sb.append(tab).append(
+				"Last Name: <input name='lastName' required type='text'/>\n");
+		sb.append(tab)
+				.append("Age: <input name='age' required type='text'/>\n");
+		sb.append("<input type='submit' />\n");
+		sb.append("</blockquote></font></body></html>\n");
+
+		return sb.toString();
+	}
+
+	public String queryingParameters() {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("<html>\n");
+
+		// Query Fields: first name, last name, age
+		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+		sb.append("<body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("First Name: <input name='firstName' type='text'/>\n");
+		sb.append(tab).append(
+				"Last Name: <input name='lastName' type='text'/>\n");
+		sb.append(tab).append("Age: <input name='age' type='text'/>\n");
+		sb.append("<input type='submit' />\n");
+		sb.append("</blockquote></font></body></html>\n");
+
+		return sb.toString();
+	}
+
+	/**
 	 * MODIFY HOME page which only has header of options. Body is blank
 	 */
 	@Path("")
@@ -79,8 +124,6 @@ public class ModifyService {
 	public String modifyAddStudent(@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
 
-		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
 		StringBuilder sb = new StringBuilder();
 
 		// Page header
@@ -90,15 +133,10 @@ public class ModifyService {
 		sb.append("<html>\n");
 		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
 		sb.append("<br/>").append("ADD").append("<br/>");
-		sb.append("First Name: <input name='firstName' required type='text'/>\n");
-		sb.append(tab).append(
-				"Last Name: <input name='lastName' required type='text'/>\n");
-		sb.append(tab)
-				.append("Age: <input name='age' required type='text'/>\n");
-		sb.append("<input type='submit' />\n");
+		sb.append(queryingParametersRequired());
 
 		// Return: confirmation that student is added or fail
-		sb.append("<br/><br/><br/>\n");
+		sb.append("<br/><br/><br/>Result:\n");
 
 		if (firstName != null && !firstName.trim().isEmpty()) {
 			dao.addStudentToDatabase(firstName, lastName, age);
@@ -113,153 +151,154 @@ public class ModifyService {
 		return sb.toString();
 	}
 
-//	/**
-//	 * EDIT SEARCH student page. Allows user to enter ID of student they would
-//	 * like to edit. Once user selects and confirms to edit the student, they
-//	 * will be linked to /edit_form to make actual edits to student information.
-//	 */
-//	@Path("/edit")
-//	@GET
-//	@WebMethod
-//	public String modifyEditStudent(@QueryParam("id") String id) {
-//
-//		StringBuilder sb = new StringBuilder();
-//		sb.append(modifyPageHeader());
-//
-//		sb.append("<html>\n");
-//		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-//
-//		// Search form
-//		sb.append("<br/>")
-//				.append("EDIT - Search ID of the Student You Wish To Add")
-//				.append("<br/>");
-//		sb.append("ID: <input name='id' type='number'/>\n");
-//		sb.append("<input type='submit' /></form>\n");
-//
-//		sb.append("<br/><br/>").append("Results:\n");
-//
-//		// Check if ID number is valid.
-//		try {
-//			int idInt = Integer.parseInt(id);
-//			sb.append(db.searchStudentByParameters("null", idInt));
-//			idModify = idInt;
-//			sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
-//
-//		} catch (NumberFormatException nfe) {
-//			sb.append("The ID is invalid");
-//		}
-//
-//		// Close
-//		sb.append("</blockquote></font></html></body></p>\n");
-//
-//		return sb.toString();
-//	}
-//
-//	/**
-//	 * EDIT FORM opens once a user selects the specific student they want to
-//	 * edit. A text box opens for: first name, last name, and age. The default
-//	 * original first, last, and age are pre-filled in the fields. User can
-//	 * modify and submit changes. After submission, user will receive a
-//	 * confirmation.
-//	 */
-//	@Path("/edit/form")
-//	@GET
-//	@WebMethod
-//	public String modifyEditForm(@QueryParam("firstName") String firstName,
-//			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
-//
-//		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-//		StringBuilder sb = new StringBuilder();
-//
-//		sb.append(modifyPageHeader());
-//
-//		sb.append("<html>\n");
-//		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-//		sb.append("<br/>").append("EDIT HERE").append("<br/>");
-//
-//		Student student = db.getStudentByID(idModify);
-//
-//		// Form with pre-filled values.
-//		sb.append(
-//				"First Name: <input name='firstName' required type='text' value = '")
-//				.append(student.getFirstName()).append("'/>\n");
-//		sb.append(tab)
-//				.append("Last Name: <input name='lastName' required type='text' value = '")
-//				.append(student.getLastName()).append("'/>\n");
-//		sb.append(tab)
-//				.append("Age: <input name='age' required type='text' value = '")
-//				.append(student.getAge()).append("'/>\n");
-//		sb.append("<input type='submit' />\n");
-//
-//		// Initial check if response is committed. If so, edit!
-//		if (firstName != null && !firstName.trim().isEmpty()) {
-//			sb.append("<br/><br/>").append(
-//					db.editStudentName(student, firstName, lastName, age));
-//		}
-//		sb.append("</blockquote></font></html></body></p>\n");
-//		return sb.toString();
-//	}
-//
-//	/**
-//	 * REMOVE student page. Allows user to enter ID of student they would like
-//	 * to remove. Once user selects and confirms to remove the student, they
-//	 * will be linked to /remove_true confirmation page.
-//	 */
-//	@Path("/remove")
-//	@GET
-//	@WebMethod
-//	public String modifyRemoveStudent(@QueryParam("id") String id) {
-//
-//		StringBuilder sb = new StringBuilder();
-//
-//		sb.append(modifyPageHeader());
-//
-//		sb.append("<html>\n");
-//		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-//		sb.append("<br/>").append("REMOVE").append("<br/>");
-//		sb.append("ID: <input name='id' type='number'/>\n");
-//		sb.append("<input type='submit' /></form>\n");
-//
-//		sb.append("<br/><br/>").append("Results:\n");
-//
-//		// Try to parse id as an int
-//		try {
-//			int idInt = Integer.parseInt(id);
-//			sb.append(db.searchStudentByParameters("null", idInt));
-//			idModify = idInt;
-//			sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
-//
-//		} catch (NumberFormatException nfe) {
-//			sb.append("The ID is invalid");
-//		}
-//
-//		// Close
-//		sb.append("</blockquote></font></html></body></p>\n");
-//
-//		return sb.toString();
-//	}
-//
-//	/**
-//	 * REMOVE TRUE student page. Confirmation page for when "Remove" button is
-//	 * clicked for student.
-//	 */
-//	@Path("/remove/true")
-//	@GET
-//	@WebMethod
-//	public String modifyRemoveTrue() {
-//
-//		StringBuilder sb = new StringBuilder();
-//
-//		sb.append(modifyPageHeader());
-//
-//		sb.append("<html>\n");
-//		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-//		sb.append("<br/>").append("REMOVE").append("<br/>");
-//
-//		sb.append("<br/>").append(db.removeStudentByID(idModify))
-//				.append("<br/>");
-//		sb.append("</blockquote></font></html></body></p>\n");
-//		return sb.toString();
-//	}
+	/**
+	 * EDIT SEARCH student page. Allows user to enter ID of student they would
+	 * like to edit. Once user selects and confirms to edit the student, they
+	 * will be linked to /edit_form to make actual edits to student information.
+	 */
+	@Path("/edit")
+	@GET
+	@WebMethod
+	public String modifyEditStudent(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName,
+			@QueryParam("age") String ageString) {
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(modifyPageHeader());
+
+		// Search form
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("<br/>").append("EDIT")
+				.append("<br/>");
+		sb.append(queryingParameters());
+
+		// Search results
+		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
+
+		try {
+			sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+					lastName, ageString)));
+			// idModify = idInt;
+			// sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
+
+		} catch (NumberFormatException nfe) {
+			sb.append("The ID is invalid");
+		}
+
+		// Close
+		sb.append("</blockquote></font></html></body></p>\n");
+
+		return sb.toString();
+	}
+
+	// /**
+	// * EDIT FORM opens once a user selects the specific student they want to
+	// * edit. A text box opens for: first name, last name, and age. The default
+	// * original first, last, and age are pre-filled in the fields. User can
+	// * modify and submit changes. After submission, user will receive a
+	// * confirmation.
+	// */
+	// @Path("/edit/form")
+	// @GET
+	// @WebMethod
+	// public String modifyEditForm(@QueryParam("firstName") String firstName,
+	// @QueryParam("lastName") String lastName, @QueryParam("age") int age) {
+	//
+	// String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+	// StringBuilder sb = new StringBuilder();
+	//
+	// sb.append(modifyPageHeader());
+	//
+	// sb.append("<html>\n");
+	// sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+	// sb.append("<br/>").append("EDIT HERE").append("<br/>");
+	//
+	// Student student = db.getStudentByID(idModify);
+	//
+	// // Form with pre-filled values.
+	// sb.append(
+	// "First Name: <input name='firstName' required type='text' value = '")
+	// .append(student.getFirstName()).append("'/>\n");
+	// sb.append(tab)
+	// .append("Last Name: <input name='lastName' required type='text' value = '")
+	// .append(student.getLastName()).append("'/>\n");
+	// sb.append(tab)
+	// .append("Age: <input name='age' required type='text' value = '")
+	// .append(student.getAge()).append("'/>\n");
+	// sb.append("<input type='submit' />\n");
+	//
+	// // Initial check if response is committed. If so, edit!
+	// if (firstName != null && !firstName.trim().isEmpty()) {
+	// sb.append("<br/><br/>").append(
+	// db.editStudentName(student, firstName, lastName, age));
+	// }
+	// sb.append("</blockquote></font></html></body></p>\n");
+	// return sb.toString();
+	// }
+	//
+	/**
+	 * REMOVE student page. Allows user to enter ID of student they would like
+	 * to remove. Once user selects and confirms to remove the student, they
+	 * will be linked to /remove_true confirmation page.
+	 */
+	@Path("/remove")
+	@GET
+	@WebMethod
+	public String modifyRemoveStudent(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName,
+			@QueryParam("age") String ageString) {
+
+		StringBuilder sb = new StringBuilder();
+
+		sb.append(modifyPageHeader());
+
+		//Search form
+		sb.append("<html>\n");
+		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+		sb.append("<br/>").append("REMOVE").append("<br/>");
+		sb.append(queryingParameters());
+		
+		//Search results
+		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
+
+		try {
+			sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+					lastName, ageString)));
+			//idModify = idInt;
+			//sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
+
+		} catch (NumberFormatException nfe) {
+			sb.append("The ID is invalid");
+		}
+
+		// Close
+		sb.append("</blockquote></font></html></body></p>\n");
+
+		return sb.toString();
+	}
+	//
+	// /**
+	// * REMOVE TRUE student page. Confirmation page for when "Remove" button is
+	// * clicked for student.
+	// */
+	// @Path("/remove/true")
+	// @GET
+	// @WebMethod
+	// public String modifyRemoveTrue() {
+	//
+	// StringBuilder sb = new StringBuilder();
+	//
+	// sb.append(modifyPageHeader());
+	//
+	// sb.append("<html>\n");
+	// sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
+	// sb.append("<br/>").append("REMOVE").append("<br/>");
+	//
+	// sb.append("<br/>").append(db.removeStudentByID(idModify))
+	// .append("<br/>");
+	// sb.append("</blockquote></font></html></body></p>\n");
+	// return sb.toString();
+	// }
 
 }

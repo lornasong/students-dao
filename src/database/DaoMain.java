@@ -39,7 +39,13 @@ public class DaoMain {
 			// addStudentToDatabase("hello", "test", 4);
 			// addStudentToDatabase("bye", "trial", 2);
 			// addStudentToDatabase("lo", "tri", 4);
-			System.out.println(updateStudentInformation(3, "lo", "yay", 6));
+			// System.out.println(updateStudentInformation(3, "lo", "yay", 6));
+			// System.out.println(listToString(queryByAge("2")));
+			// System.out.println(listToString(queryByMultipleFields("bye",
+			// "hi",
+			// "2")));
+
+			System.out.println(listToString(getStudentListSorted("")));
 
 		} finally {
 			// destroy the data source which should close underlying connections
@@ -91,7 +97,7 @@ public class DaoMain {
 										// 0
 
 		} catch (SQLException e) {
-			System.out.println("Error: querying age name");
+			System.out.println("Error: querying for student using primary key");
 			e.printStackTrace();
 		}
 		return null;
@@ -140,48 +146,48 @@ public class DaoMain {
 	}
 
 	/**
-	 * RETURNS LIST sorted by variable 'type.' Type options: 'age', 'lastName'
-	 * or default no sorting. List is in string formatted in HTML.
+	 * RETURNS LIST sorted by variable 'type.' Type options: 'age', 'lastName',
+	 * 'firstName' or default no sorting (sorted by primary key).
+	 * 
+	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
+	 * listToString(getStudentListSorted)
 	 */
-	public String viewStudentsSorted(String type) {
-		try {
+	public QueryBuilder<Student, Integer> getStudentListSorted(String type) {
 
-			// Get List of Students
-			List<Student> studentList = studentDao.queryForAll();
+		QueryBuilder<Student, Integer> statementBuilder = studentDao
+				.queryBuilder();
 
-			// Sort as necessary
-			if (type.equals("age")) {
-				Collections.sort(studentList, new AgeComparator());
-			} else if (type.equals("lastName")) {
-				Collections.sort(studentList, new LastNameComparator());
-			} else {
-				// Default: no sorting.
-			}
+		// Sort as necessary
+		if (type.equals("age")) {
+			statementBuilder.orderBy(Student.AGE, true);
 
-			return listToString(studentList);
-
-		} catch (SQLException e) {
-			System.out.println("Error: viewing by age");
-			e.printStackTrace();
+		} else if (type.equals("lastName")) {
+			statementBuilder.orderBy(Student.LAST_NAME, true);
+		} else if (type.equals("firstName")) {
+			statementBuilder.orderBy(Student.FIRST_NAME, true);
+		} else {
+			// Default: no sorting.
 		}
-		return null;
+
+		return statementBuilder;
 
 	}
 
 	/**
-	 * SEARCHES FOR FIRST NAME and returns a string list of all matches that
-	 * include user's input. That is: %input%.
+	 * SEARCHES FOR FIRST NAME and returns QueryBuilder of all matches that
+	 * include user's input. That is: %input%. If input is null, returns all.
+	 * 
+	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
+	 * listToString(queryByFirstName)
 	 */
-	public String queryByFirstName(String firstName) {
+	public QueryBuilder<Student, Integer> queryByFirstName(String firstName) {
 		QueryBuilder<Student, Integer> statementBuilder = studentDao
 				.queryBuilder();
 		try {
 
 			statementBuilder.where().like(Student.FIRST_NAME,
 					"%" + firstName + "%");
-			List<Student> studentList = studentDao.query(statementBuilder
-					.prepare());
-			return listToString(studentList);
+			return statementBuilder;
 
 		} catch (SQLException e) {
 			System.out.println("Error: querying first name");
@@ -191,19 +197,20 @@ public class DaoMain {
 	}
 
 	/**
-	 * SEARCHES FOR LAST NAME and returns a string list of all matches that
-	 * include user's input. That is: %input%.
+	 * SEARCHES FOR LAST NAME and returns QueryBuilder of all matches that
+	 * include user's input. That is: %input%. If input is null, returns all.
+	 * 
+	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
+	 * listToString(queryByLastName)
 	 */
-	public String queryByLastName(String lastName) {
+	public QueryBuilder<Student, Integer> queryByLastName(String lastName) {
 		QueryBuilder<Student, Integer> statementBuilder = studentDao
 				.queryBuilder();
 		try {
 
 			statementBuilder.where().like(Student.LAST_NAME,
 					"%" + lastName + "%");
-			List<Student> studentList = studentDao.query(statementBuilder
-					.prepare());
-			return listToString(studentList);
+			return statementBuilder;
 
 		} catch (SQLException e) {
 			System.out.println("Error: querying last name");
@@ -213,21 +220,82 @@ public class DaoMain {
 	}
 
 	/**
-	 * SEARCHES FOR AGE and returns a string list of all exact matches to user's
-	 * input.
+	 * SEARCHES FOR AGE and returns a QueryBuilder of all exact matches to
+	 * user's input. If input is null, returns all.
+	 * 
+	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
+	 * listToString(queryByAge)
 	 */
-	public String queryByAge(int age) {
+	public QueryBuilder<Student, Integer> queryByAge(String ageString) {
+
 		QueryBuilder<Student, Integer> statementBuilder = studentDao
 				.queryBuilder();
+
 		try {
 
-			statementBuilder.where().like(Student.AGE, age);
-			List<Student> studentList = studentDao.query(statementBuilder
-					.prepare());
-			return listToString(studentList);
+			// No user input, return all
+			if (ageString == null || ageString.trim().isEmpty()) {
+				statementBuilder.where().isNotNull(Student.AGE);
+
+			} else {
+				// User inputed something, return matches if input like number
+
+				int age = Integer.parseInt(ageString);
+				statementBuilder.where().like(Student.AGE, age);
+			}
+			return statementBuilder;
 
 		} catch (SQLException e) {
-			System.out.println("Error: querying age name");
+			System.out.println("Error: querying age");
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			System.out.println("Error: age string cannot be parsed to int");
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * SEARCHES FOR AGE, FIRSTNAME, LASTNAME and returns QueryBuilder of matches
+	 * to user input. If input is null, returns all.
+	 * 
+	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
+	 * listToString(queryByMultipleFields)
+	 * 
+	 * SELECT * FROM student WHERE (firstName IS NULL OR FIRST_NAME = firstName)
+	 * AND (lastName IS NULL OR LAST_NAME = lastName) AND (age IS NULL OR AGE =
+	 * age)
+	 */
+	public QueryBuilder<Student, Integer> queryByMultipleFields(
+			String firstName, String lastName, String ageString) {
+
+		QueryBuilder<Student, Integer> allBuilder = studentDao.queryBuilder();
+
+		try {
+
+			// No user input, return all
+			if (ageString == null || ageString.trim().isEmpty()) {
+				allBuilder.where()
+						.like(Student.LAST_NAME, "%" + lastName + "%").and()
+						.like(Student.FIRST_NAME, "%" + firstName + "%");
+
+				// user inputed something, return matches if input like number
+			} else {
+
+				int age = Integer.parseInt(ageString);
+
+				allBuilder.where()
+						.like(Student.LAST_NAME, "%" + lastName + "%").and()
+						.like(Student.FIRST_NAME, "%" + firstName + "%").and()
+						.like(Student.AGE, age);
+			}
+			return allBuilder;
+
+		} catch (SQLException e) {
+			System.out.println("Error: querying all fields");
+			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			System.out.println("Error: age string cannot be parsed to int");
 			e.printStackTrace();
 		}
 		return null;
@@ -237,17 +305,29 @@ public class DaoMain {
 	 * RETURNS STUDENTLIST AS STRING in html format. Loops through list. If list
 	 * is empty, returns specific message notifying user.
 	 */
-	private String listToString(List<Student> studentList) {
+	public String listToString(QueryBuilder<Student, Integer> statementBuilder) {
 
-		if (studentList.isEmpty()) {
-			return "No Students Match Your Search";
+		List<Student> studentList;
+
+		try {
+			studentList = studentDao.query(statementBuilder.prepare());
+
+			if (studentList.isEmpty()) {
+				return "No Students Match Your Search";
+			}
+
+			StringBuilder sb = new StringBuilder();
+			for (Student s : studentList) {
+				sb.append(s.toString()).append("<br/>");
+			}
+
+			return sb.toString();
+
+		} catch (SQLException e) {
+			System.out.println("Issue printing list");
+			e.printStackTrace();
 		}
 
-		StringBuilder sb = new StringBuilder();
-		for (Student s : studentList) {
-			sb.append(s.toString()).append("\n");
-		}
-
-		return sb.toString();
+		return null;
 	}
 }

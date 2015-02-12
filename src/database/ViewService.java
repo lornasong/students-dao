@@ -63,17 +63,17 @@ public class ViewService {
 	/**
 	 * View/Export student database by age
 	 */
-	@Path("/view_age")
-	@GET
-	@WebMethod
-	public ModelView viewByAge() {
-		Map<String, Object> model = new HashMap<String, Object>();
-
-		model.put("viewType", "VIEW BY AGE");
-		//model.put("exportCsv", db.saveDataAsCsv());
-		model.put("listBy", dao.viewStudentsSorted("age"));
-		return new ModelView(model, "/view.html");
-	}
+//	@Path("/view_age")
+//	@GET
+//	@WebMethod
+//	public ModelView viewByAge() {
+//		Map<String, Object> model = new HashMap<String, Object>();
+//
+//		model.put("viewType", "VIEW BY AGE");
+//		//model.put("exportCsv", db.saveDataAsCsv());
+//		model.put("listBy", dao.viewStudentsSorted("age"));
+//		return new ModelView(model, "/view.html");
+//	}
 
 /*DEPRECATED FOR FREEMARKER
 	// Header contains "Modification" title. Bar. Provides Buttons for options
