@@ -1,0 +1,37 @@
+[#ftl]
+<html>
+<body>
+	<font face = 'verdana'><blockquote><br/>
+	EDIT<br/>
+	
+	<div style = "float: right;">
+	<form action='/home'>
+	<input type='submit' value='Return Home'/>
+	</form>
+	<form action='/home/modify/remove'>
+	<input type='submit' value='Remove a Student'/>
+	</form>
+	<form action='/home/modify/edit'>
+	<input type='submit' value='Edit a Student'/>
+	</form>
+	<form action='/home/modify/add'>
+	<input type='submit' value='Add a Student'/>
+	</form>
+	</div>
+	
+	<form>
+	First Name: <input name='firstName' type='text'/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input name='lastName' type='text'/>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age: <input name='age' type='text'/>
+	<input type='submit' />
+	</form>
+	
+	<br/><br/>Results:<br/><br/>
+	[#list searchList as student]
+		${student.firstName} ${student.lastName}<br/>
+	[/#list]
+	
+	
+	</blockquote></font>
+</body>
+</html>

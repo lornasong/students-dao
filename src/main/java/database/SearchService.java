@@ -18,9 +18,9 @@ import javax.ws.rs.QueryParam;
 @Path("/home/search")
 public class SearchService {
 
-	private final DaoMain dao;
+	private final StudentDao dao;
 
-	public SearchService(DaoMain dao) {
+	public SearchService(StudentDao dao) {
 		this.dao = dao;
 	}
 
@@ -57,9 +57,9 @@ public class SearchService {
 
 		//Results
 		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
-				lastName, ageString)));
-		
+//		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
+//				lastName, ageString)));
+//		
 		//Close
 		sb.append("<br/></form>\n");
 		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home'></form>\n");

@@ -1,11 +1,16 @@
 package database;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import com.j256.simplewebframework.freemarker.ModelView;
 
 /**
  * Includes all web services with url "/home/modify" base. Which includes the
@@ -21,11 +26,9 @@ import javax.ws.rs.QueryParam;
 @Path("/home/modify")
 public class ModifyService {
 
-	private final DaoMain dao;
+	private final StudentDao dao;
 
-	private int idModify;
-
-	public ModifyService(DaoMain dao) {
+	public ModifyService(StudentDao dao) {
 		this.dao = dao;
 	}
 
@@ -156,33 +159,32 @@ public class ModifyService {
 	 * like to edit. Once user selects and confirms to edit the student, they
 	 * will be linked to /edit_form to make actual edits to student information.
 	 */
-	@Path("/edit")
+	@Path("/search")
 	@GET
 	@WebMethod
-	public String modifyEditStudent(@QueryParam("firstName") String firstName,
+	public ModelView search(@QueryParam("firstName") String firstName,
 			@QueryParam("lastName") String lastName,
 			@QueryParam("age") String ageString) {
 
-		StringBuilder sb = new StringBuilder();
-		sb.append(modifyPageHeader());
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("firstName", firstName);
+		model.put("lastName", lastName);
+		model.put("age", ageString);
 
-		// Search form
-		sb.append("<html>\n");
-		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("<br/>").append("EDIT").append("<br/>");
-		sb.append(queryingParameters());
+		Integer age = null;
+		try {
+			if(ageString != null && !ageString.isEmpty()){
+				age = Integer.parseInt(ageString);
+			}
+		} catch (NumberFormatException nfe) {
+			model.put("ageError", "Error: you didn't input number for age");
+		}
 
-		// Search results
-		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
-				lastName, ageString)));
-		// idModify = idInt;
-		// sb.append("<form action='http://localhost:8080/home/modify/edit/form'><input type='submit' value='Edit'></form>");
+		model.put("searchList", dao.queryByMultipleFields(firstName, lastName, age));
 
-		// Close
-		sb.append("</blockquote></font></html></body></p>\n");
-
-		return sb.toString();
+		
+		
+		return new ModelView(model, "/modifySearch.html");
 	}
 
 	// /**
@@ -255,8 +257,8 @@ public class ModifyService {
 
 		// Search results
 		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-		sb.append(dao.listToString(dao.queryByMultipleFields(firstName,
-				lastName, ageString)));
+		// sb.append(dao.queryByMultipleFields(firstName,
+		// lastName, ageString)));
 		// idModify = idInt;
 		// sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
 

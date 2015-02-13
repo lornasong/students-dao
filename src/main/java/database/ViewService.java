@@ -1,15 +1,8 @@
 package database;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.jws.WebMethod;
 import javax.jws.WebService;
-import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-
-import com.j256.simplewebframework.freemarker.ModelView;
 
 /**
  * Provides a web view of the students enrolled based on id, age, or lastname.
@@ -23,9 +16,9 @@ import com.j256.simplewebframework.freemarker.ModelView;
 @Path("/home")
 public class ViewService {
 
-	private final DaoMain dao;
+	private final StudentDao dao;
 
-	public ViewService(DaoMain dao) {
+	public ViewService(StudentDao dao) {
 		this.dao = dao;
 	}
 

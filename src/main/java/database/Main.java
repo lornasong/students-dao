@@ -8,12 +8,13 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 
 import com.j256.simplewebframework.displayer.StringResultDisplayer;
 import com.j256.simplewebframework.freemarker.FreemarkerHtmlDisplayer;
+import com.j256.simplewebframework.handler.LoggingHandler;
 import com.j256.simplewebframework.handler.ServiceHandler;
 import com.j256.simplewebframework.resource.FileLocator;
 
 import freemarker.template.Configuration;
 
-public class DatabaseWebMain {
+public class Main {
 	
 	private static final int DEFAULT_WEB_PORT = 8080;
 
@@ -29,17 +30,17 @@ public class DatabaseWebMain {
 
 		
 		StudentDatabaseWeb database = new StudentDatabaseWeb("Your School");
-		DaoMain dao = new DaoMain();
-		dao.doMain(null);
+		DaoUtil daoMain = new DaoUtil();
+		daoMain.configure();
 		
 		// create a service handler
 		ServiceHandler serviceHandler = new ServiceHandler();
 				
 		// register our service that handles requests from simple-web-framework
-//		serviceHandler.registerWebService(new HomeService(database));
-		serviceHandler.registerWebService(new ModifyService(dao));
-		serviceHandler.registerWebService(new SearchService(dao));
-//		serviceHandler.registerWebService(new ViewService(dao));
+		serviceHandler.registerWebService(new HomeService(database));
+		serviceHandler.registerWebService(new ModifyService(daoMain.getStudentDao()));
+		serviceHandler.registerWebService(new SearchService(daoMain.getStudentDao()));
+		serviceHandler.registerWebService(new ViewService(daoMain.getStudentDao()));
 		
 		// register a displayer of String results
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
@@ -58,7 +59,10 @@ public class DatabaseWebMain {
 		handlers.addHandler(serviceHandler);
 		handlers.addHandler(new WrongUrlHandler());
 		
-		server.setHandler(handlers);
+		LoggingHandler loggingHandler = new LoggingHandler();
+		loggingHandler.setHandler(handlers);
+		
+		server.setHandler(loggingHandler);
 		server.start();
 	}
 
