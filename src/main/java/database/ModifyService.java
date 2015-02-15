@@ -155,9 +155,8 @@ public class ModifyService {
 	}
 
 	/**
-	 * EDIT SEARCH student page. Allows user to enter ID of student they would
-	 * like to edit. Once user selects and confirms to edit the student, they
-	 * will be linked to /edit_form to make actual edits to student information.
+	 * SEARCH student page. Allows user to enter information (first name, last
+	 * name, age) to search for student that they would like to edit.
 	 */
 	@Path("/search")
 	@GET
@@ -173,17 +172,16 @@ public class ModifyService {
 
 		Integer age = null;
 		try {
-			if(ageString != null && !ageString.isEmpty()){
+			if (ageString != null && !ageString.isEmpty()) {
 				age = Integer.parseInt(ageString);
 			}
 		} catch (NumberFormatException nfe) {
-			model.put("ageError", "Error: you didn't input number for age");
+			model.put("ageError", "Error: you did not input a number for age");
 		}
 
-		model.put("searchList", dao.queryByMultipleFields(firstName, lastName, age));
+		model.put("searchList",
+				dao.queryByMultipleFields(firstName, lastName, age));
 
-		
-		
 		return new ModelView(model, "/modifySearch.html");
 	}
 

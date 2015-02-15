@@ -1,36 +1,55 @@
 [#ftl]
 <html>
-<body>
-	<font face = 'verdana'><blockquote><br/>
-	EDIT<br/>
+<header>
+	<h1 style = "font-family: verdana; text-align: center">
+		MODIFICATIONS
+		<hr width = '93%' size = '5' color = '#270A33'>
+	</h1>
+</header>
+
+<body style = "font-family: verdana">
+	<blockquote><br/>
 	
-	<div style = "float: right;">
-	<form action='/home'>
-	<input type='submit' value='Return Home'/>
-	</form>
-	<form action='/home/modify/remove'>
-	<input type='submit' value='Remove a Student'/>
-	</form>
-	<form action='/home/modify/edit'>
-	<input type='submit' value='Edit a Student'/>
-	</form>
-	<form action='/home/modify/add'>
-	<input type='submit' value='Add a Student'/>
-	</form>
+	<!--Right Side buttons-->
+	<div style = "position: relative; width: 10%; float: right">
+		<form action='/home/modify/add'>
+		<input type='submit' value='Add a Student'/>
+		</form>
+		<form action='/home/modify/search'>
+		<input type='submit' value='Search for a Student'/>
+		</form>
+		<form action='/home'>
+		<input type='submit' value='Return Home'/>
+		</form>
 	</div>
 	
-	<form>
-	First Name: <input name='firstName' type='text'/>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input name='lastName' type='text'/>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age: <input name='age' type='text'/>
-	<input type='submit' />
-	</form>
+	<!--Left Side buttons-->
+	<div style = "position: relative; width: 88%; float: left">
 	
-	<br/><br/>Results:<br/><br/>
-	[#list searchList as student]
-		${student.firstName} ${student.lastName}<br/>
-	[/#list]
+		<div style = "border: 2px solid #F7D57E; border-radius: 10px; padding: 10px 10px;
+		margin-bottom: 50px">
+			SEARCH STUDENTS <br/>
+		</div>
+		
+		<form>
+			First Name: <input name='firstName' type='text'/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input name='lastName' type='text'/>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age: <input name='age' type='text'/>
+			<input type='submit' /><br/><br/>
+		</form>
+		
+		<div style = "border: 2px solid #F7D57E; border-radius: 10px; padding: 10px 10px;
+		margin-bottom: 50px">
+			RESULTS <br/>
+		</div>
+		
+		[#list searchList as student]
+			<div style = "margin-bottom: 0.5px">
+			ID: ${student.getPKey()?string} ${student.firstName} ${student.lastName}
+			</div><br/>
+		[/#list]
 	
+	</div>
 	
 	</blockquote></font>
 </body>
