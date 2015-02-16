@@ -1,54 +1,67 @@
 [#ftl]
 <html>
-<header>
-	<h1 style = "font-family: verdana; text-align: center">
+<header style = "position: relative; width: 88%; float: left">
+	<blockquote>
+	<h1 style = "font-family: Helvetica;">
 		MODIFICATIONS
-		<hr width = '93%' size = '5' color = '#270A33'>
+		<hr width = '500px' size = '2' color = '#AFB6D3' align = 'left'>
 	</h1>
+	</blockquote>
 </header>
 
-<body style = "font-family: verdana">
+<body style = "font-family: Helvetica">
 	<blockquote><br/>
 	
 	<!--Right Side buttons-->
 	<div style = "position: relative; width: 10%; float: right">
-		<form action='/home/modify/add'>
-		<input type='submit' value='Add a Student'/>
-		</form>
-		<form action='/home/modify/search'>
-		<input type='submit' value='Search for a Student'/>
-		</form>
-		<form action='/home'>
-		<input type='submit' value='Return Home'/>
-		</form>
-	</div>
-	
-	<!--Left Side buttons-->
-	<div style = "position: relative; width: 88%; float: left">
-	
-		<div style = "border: 2px solid #F7D57E; border-radius: 10px; padding: 10px 10px;
-		margin-bottom: 50px">
-			SEARCH STUDENTS <br/>
+		<div style = "padding: 3px">
+			OPTIONS			
 		</div>
 		
-		<form>
-			First Name: <input name='firstName' type='text'/>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input name='lastName' type='text'/>
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age: <input name='age' type='text'/>
-			<input type='submit' /><br/><br/>
-		</form>
-		
-		<div style = "border: 2px solid #F7D57E; border-radius: 10px; padding: 10px 10px;
-		margin-bottom: 50px">
-			RESULTS <br/>
+		<hr width = '120%' size = '2' color = '#AFB6D3' style = "margin-bottom: 15px">
+	
+		<div style = "padding: 5px; ">
+			<form action='/home/modify/add'>
+			<input type='submit' value='Add a Student' style = "display: inline-block; width: 125px; color: #FFFFFF; background: #C14F3C; border: none; padding: 2px"/>
+			</form>
+			<form action='/home/modify/search'>
+			<input type='submit' value='Search for a Student' style = "display: inline-block; width: 125px; color: #FFFFFF; background: #C14F3C; border: none; padding: 2px"/>
+			</form>
+			<form action='/home'>
+			<input type='submit' value='Return Home' width = "500" style = "display: inline-block; width: 125px; color: #FFFFFF; background: #C14F3C; border: none; padding: 2px"/>
+			</form>
+		</div>
+	</div>
+	
+	<!--Left Side buttons top search-->
+	<div style = "position: relative; width: 88%; float: left; border: 2px solid #AFB6D3">
+		<blockquote>
+			<div style = "margin-top: 20px; margin-bottom: 15px">
+				<br/>SEARCH STUDENTS
+			</div>
+			
+			<form>
+				First Name: <input name='firstName' type='text'/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name: <input name='lastName' type='text'/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Age: <input name='age' type='text'/>
+				<input type='submit' /><br/><br/><br/>
+			</form>
+		</blockquote>
+	</div>
+	
+	<!--Left Side buttons bottom results-->
+	<div style = "position: relative; width: 88%; float: left">
+	<blockquote>
+		<div style = "margin-top: 30px; margin-bottom: 15px">
+			RESULTS
 		</div>
 		
 		[#list searchList as student]
-			<div style = "margin-bottom: 0.5px">
+			<div style = "margin-bottom: 0.5px; ">
 			ID: ${student.getPKey()?string} ${student.firstName} ${student.lastName}
 			</div><br/>
 		[/#list]
-	
+	</blockquote>
 	</div>
 	
 	</blockquote></font>
