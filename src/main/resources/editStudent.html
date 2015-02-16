@@ -92,55 +92,20 @@
 		</div>
 	</div>
 	
-	<!--Left-Side-Top SEARCH-->
+	<!--Left-Side STUDENT INFO-->
+	
+	
 	<div id = 'left'>
 		<blockquote>
 			<div id = 'label'>
-				<br/>SEARCH STUDENTS
+				<br/>STUDENT ID: ${pKey}
+				
+				
+				
 			</div>
 			
-			<form>
-				First Name:&nbsp;&nbsp;&nbsp;<input name='firstName' type='text'/>
-				&nbsp;&nbsp;&nbsp;&nbsp;Last Name:&nbsp;&nbsp;&nbsp;<input name='lastName' type='text'/>
-				&nbsp;&nbsp;&nbsp;&nbsp;Age:&nbsp;&nbsp;&nbsp;<input name='age' type='text' style = 'width: 35px'/>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value = 'Query' id = 'options'/><br/><br/><br/>
-			</form>
+			
 		</blockquote>
-	</div>
-	
-	<!--Left-Side-Bottom RESULTS-->
-	<div id = 'left'>
-	<blockquote>
-		<div id = 'label'>
-			RESULTS
-		</div>
-		
-		<table>
-			<thead>
-				<tr>
-					<th class = 'idCol'>Student ID</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th class = 'ageCol'>Age</th>
-				</tr>
-			</thead>
-			<tbody>
-				[#list searchList as student]
-					<tr>
-						<td>
-							&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp
-							<a href = '/home/modify/editStudent/${student.getPKey()?string}'>
-								${student.getPKey()?string}
-							</a>
-						</td>
-						<td>${student.firstName}</td>
-						<td>${student.lastName}</td>
-						<td>${student.age}</td>
-					</tr>
-				[/#list]
-			</tbody>
-		</table>
-	</blockquote>
 	</div>
 	
 	</blockquote>

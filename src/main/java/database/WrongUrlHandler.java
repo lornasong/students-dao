@@ -39,7 +39,7 @@ public class WrongUrlHandler extends AbstractHandler {
 
 		sb.append("<br/><br/><br/>");
 		sb.append("<center>");
-		sb.append(getComic());
+//		sb.append(getComic());
 		sb.append("</center>");
 
 		sb.append("<h1>Uh Oh!</h1>");

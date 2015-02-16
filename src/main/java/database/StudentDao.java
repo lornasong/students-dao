@@ -33,7 +33,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * RETURNS STUDENT OBJECT given a particular primary key. Always returns one
 	 * student to be used for further methods.
 	 */
-	private Student getStudentByPKey(int pKey) {
+	public Student getStudentByPKey(int pKey) {
 
 		QueryBuilder<Student, Integer> statementBuilder = queryBuilder();
 		try {

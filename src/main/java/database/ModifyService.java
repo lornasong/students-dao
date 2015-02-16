@@ -7,6 +7,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 
@@ -32,6 +33,58 @@ public class ModifyService {
 		this.dao = dao;
 	}
 
+	/**
+	 * SEARCH student page. Allows user to enter information (first name, last
+	 * name, age) to search for student that they would like to edit.
+	 */
+	@Path("/search")
+	@GET
+	@WebMethod
+	public ModelView search(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName,
+			@QueryParam("age") String ageString) {
+
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("firstName", firstName);
+		model.put("lastName", lastName);
+		model.put("age", ageString);
+
+		Integer age = null;
+		try {
+			if (ageString != null && !ageString.isEmpty()) {
+				age = Integer.parseInt(ageString);
+			}
+		} catch (NumberFormatException nfe) {
+			model.put("ageError", "Error: you did not input a number for age");
+		}
+
+		model.put("searchList",
+				dao.queryByMultipleFields(firstName, lastName, age));
+
+		return new ModelView(model, "/modifySearch.html");
+	}
+	
+	@Path("/editStudent/{pKey}")
+	@GET()
+	@WebMethod
+	public ModelView edit(@PathParam("pKey") Integer pKey, @QueryParam("newFirst") String newFirst,
+			@QueryParam("newLast") String newLast,
+			@QueryParam("newAge") String ageString) {
+
+		Student selectedStudent = dao.getStudentByPKey(pKey);
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("pKey", pKey);
+		model.put("firstName", selectedStudent.getFirstName());
+		model.put("lastName", selectedStudent.getLastName());
+		model.put("age", selectedStudent.getAge());
+		return new ModelView(model, "/editStudent.html");
+	}
+	
+	
+	
+	
+	
 	/**
 	 * This is the header and buttons that will show up on all modification type
 	 * pages. That is, on the Add, Edit, and Remove pages. Header will have
@@ -152,37 +205,6 @@ public class ModifyService {
 		sb.append("</form></blockform></font></html></body></p>\n");
 
 		return sb.toString();
-	}
-
-	/**
-	 * SEARCH student page. Allows user to enter information (first name, last
-	 * name, age) to search for student that they would like to edit.
-	 */
-	@Path("/search")
-	@GET
-	@WebMethod
-	public ModelView search(@QueryParam("firstName") String firstName,
-			@QueryParam("lastName") String lastName,
-			@QueryParam("age") String ageString) {
-
-		Map<String, Object> model = new HashMap<String, Object>();
-		model.put("firstName", firstName);
-		model.put("lastName", lastName);
-		model.put("age", ageString);
-
-		Integer age = null;
-		try {
-			if (ageString != null && !ageString.isEmpty()) {
-				age = Integer.parseInt(ageString);
-			}
-		} catch (NumberFormatException nfe) {
-			model.put("ageError", "Error: you did not input a number for age");
-		}
-
-		model.put("searchList",
-				dao.queryByMultipleFields(firstName, lastName, age));
-
-		return new ModelView(model, "/modifySearch.html");
 	}
 
 	// /**
