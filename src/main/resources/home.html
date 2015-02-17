@@ -1,18 +1,74 @@
 [#ftl]
 <html>
-	<body style = "font-family: Verdana">
-		<center><h1>Welcome to ${schoolName}</h1></center>
-		<hr width = '95%' size = '5' color = '#270A33' align = 'center'>
-		
-		<p>
-			<blockquote>
-				<br/>
-				Please Select an Action Your Database:
-				<br/><br/>
-				<form action='home/modify'><input type='submit' value='Modify'></form>
-				<form action='home/search'><input type='submit' value='Search'></form>
-				<form action='home/view_id'><input type='submit' value='View & Export'></form>
-			</blockquote>
-		</p>
-	</body>
+<head>
+	<style>
+	body{
+		font-family: Helvetica;
+		margin-top: 100px;
+	}
+	h1{
+		text-align: center;
+	}
+	button{
+		padding: 10px;
+		width: 200px;
+		height: 200px;
+		color: #C14F3C;
+		font-size: 18px;
+		background: #AFB6D3;
+		border: 2px solid #AFB6D3;
+		margin: 50px;
+	}
+	button .hover-content{
+		display: none;
+	}
+	button:hover .no-hover{
+		display: none;
+	}
+	button:hover .hover-content {
+		display: inline;
+		color: #101E59;
+		clear:left;
+	}
+	</style>
+<head>
+<body>
+
+
+	<h1>THIS SCHOOL</h1>
+	<hr width = '400px' size = '2' color = '#C14F3C' align = 'center'>
+	
+	<center>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+					 <a href = '/home/modify'>
+						<button>
+						    <span class="no-hover">
+								modify
+						    </span>
+						    <span class = "hover-content">
+								add<br/>&<br/>search
+						    </span>
+						</button>
+					</a>
+					</td>
+					<td>
+					 <a href = '/home/view'>
+						<button>
+						    <span class="no-hover">
+								view
+						    </span>
+						    <span class="hover-content">
+								by age<br/>by last name<br/>by id
+						    </span>
+						</button>
+					</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</center>
+</body>
 </html>

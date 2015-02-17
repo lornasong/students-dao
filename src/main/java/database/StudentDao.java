@@ -53,18 +53,17 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * DELETES A STUDENT by using primary key to identify the particular student
 	 * needed to be deleted.
 	 */
-	public String deleteStudentFromDatabase(int pKey) {
+	public boolean deleteStudentFromDatabase(int pKey) {
 
 		try {
 			Student student = getStudentByPKey(pKey);
 			delete(student);
-			return (student.toString() + " successfully deleted");
-
+			return true;
 		} catch (SQLException e) {
 			System.out.println("Error: unsuccessful deleting student");
 			e.printStackTrace();
+			return false;
 		}
-		return null;
 	}
 
 	/**
@@ -73,7 +72,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * only one field has changed, include original information of fields that
 	 * have not changed.
 	 */
-	public String updateStudentInformation(int pKey, String newFirstName,
+	public Student updateStudentInformation(int pKey, String newFirstName,
 			String newLastName, int newAge) {
 
 		Student student = getStudentByPKey(pKey);
@@ -83,7 +82,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 
 		try {
 			update(student);
-			return student.toString() + " has been updated.";
+			return student;
 		} catch (SQLException e) {
 			System.out.println("Error: student info failed to update");
 			e.printStackTrace();

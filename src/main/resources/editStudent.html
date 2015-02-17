@@ -12,7 +12,7 @@
 			padding: 2px;
 		}
 		#options:hover{
-			background: #1C359D;
+			background: #101E59;
 			color: #FFFFFF;
 			border: none;
 		}
@@ -25,6 +25,7 @@
 			position: relative;
 			width: 75%;
 			float: left;
+			border: 2px solid #AFB6D3;
 		}
 		#label{
 			margin-top: 20px;
@@ -32,33 +33,14 @@
 			font-weight: bold;
 		}
 		table{
-		    table-layout: fixed;
+			table-layout: fixed;
 		    width: 750px;
 		}
-		th{
-			font-weight: normal;
-			text-align: left;
-			border-bottom: 1px solid #AFB6D3;
-			margin-bottom: 10px;
+		.actionButtons{
+			padding-top: 50px;
+			margin-bottom: 30px;
 		}
-		td {
-			text-align: left;
-		    border-bottom: 1px dashed #AFB6D3;
-		    overflow: hidden;
-		    padding-top: 5px;
-		}
-		.idCol{
-			width: 150px;
-		}
-		.ageCol{
-			width: 60px;
-		}
-		a{
-			color: #C14F3C;
-		}
-		a:hover{
-			color: #1C359D;
-		}
+		
 	</style>
 </head>
 <body style = "font-family: Helvetica">
@@ -79,7 +61,7 @@
 		
 		<hr width = '80%' size = '2' color = '#AFB6D3' style = "margin-bottom: 15px" align = 'left'>
 	
-		<div style = "padding: 5px; ">
+		<div style = "padding: 5px">
 			<form action='/home/modify/add'>
 			<input type='submit' value='Add a Student' id = 'options'/>
 			</form>
@@ -97,13 +79,36 @@
 	
 	<div id = 'left'>
 		<blockquote>
+		
 			<div id = 'label'>
 				<br/>STUDENT ID: ${pKey}
-				
-				
-				
 			</div>
 			
+			<form action = '/home/modify/search'>
+				<table>
+		            <tbody>
+		                <tr>
+		                    <td>FIRST NAME</td>
+		                    <td><input name='newFirst' required type='text' value = '${firstName}'/></td>     
+		                </tr>
+		                <tr>
+		                    <td>LAST NAME</td>
+		                    <td><input name='newLast' required type='text' value = '${lastName}'/></td>
+		                </tr>
+		                <tr>
+		                    <td>AGE</td>
+		                    <td><input name='newAge' required type='text' value = '${age}'/></td>
+		                </tr>
+		            </tbody>
+	        	</table>
+	        	
+	        	<div class = 'actionButtons'>
+	        		<input type='submit' name = 'action' value = 'Update Student' id = 'options'/>
+	        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	        		<input type='submit' name = 'action' value = 'Disenroll Student' id = 'options'/>
+	        	</div>
+	        	
+        	</form>
 			
 		</blockquote>
 	</div>

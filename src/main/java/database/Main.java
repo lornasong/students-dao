@@ -28,8 +28,6 @@ public class Main {
 		connector.setReuseAddress(true);
 		server.addConnector(connector);
 
-		
-		StudentDatabaseWeb database = new StudentDatabaseWeb("Your School");
 		DaoUtil daoMain = new DaoUtil();
 		daoMain.configure();
 		
@@ -37,7 +35,7 @@ public class Main {
 		ServiceHandler serviceHandler = new ServiceHandler();
 				
 		// register our service that handles requests from simple-web-framework
-		serviceHandler.registerWebService(new HomeService(database));
+		serviceHandler.registerWebService(new HomeService());
 		serviceHandler.registerWebService(new ModifyService(daoMain.getStudentDao()));
 		serviceHandler.registerWebService(new SearchService(daoMain.getStudentDao()));
 		serviceHandler.registerWebService(new ViewService(daoMain.getStudentDao()));

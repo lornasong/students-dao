@@ -5,11 +5,16 @@ import java.util.Map;
 
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.Response;
 
 import com.j256.simplewebframework.freemarker.ModelView;
 
@@ -63,28 +68,36 @@ public class ModifyService {
 
 		return new ModelView(model, "/modifySearch.html");
 	}
-	
+
 	@Path("/editStudent/{pKey}")
-	@GET()
+	@GET
 	@WebMethod
-	public ModelView edit(@PathParam("pKey") Integer pKey, @QueryParam("newFirst") String newFirst,
+	public ModelView edit(@PathParam("pKey") Integer pKey,
+			@QueryParam("newFirst") String newFirst,
 			@QueryParam("newLast") String newLast,
-			@QueryParam("newAge") String ageString) {
+			@QueryParam("newAge") String ageString,
+			@QueryParam("action") String action) {
 
 		Student selectedStudent = dao.getStudentByPKey(pKey);
-		
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("pKey", pKey);
 		model.put("firstName", selectedStudent.getFirstName());
 		model.put("lastName", selectedStudent.getLastName());
 		model.put("age", selectedStudent.getAge());
+		
+		Integer ageInt = null;
+		try {
+			if (ageString != null && !ageString.isEmpty()) {
+				ageInt = Integer.parseInt(ageString);
+				dao.updateStudentInformation(pKey, newFirst, newLast, ageInt);
+			}
+		} catch (NumberFormatException nfe) {
+			model.put("ageError", "Error: you did not input a number for age");
+		}
+
 		return new ModelView(model, "/editStudent.html");
 	}
-	
-	
-	
-	
-	
+
 	/**
 	 * This is the header and buttons that will show up on all modification type
 	 * pages. That is, on the Add, Edit, and Remove pages. Header will have

@@ -21,18 +21,11 @@ import com.j256.simplewebframework.freemarker.ModelView;
 @Path("/home")
 public class HomeService {
 
-	private final StudentDatabaseWeb db;
-
-	public HomeService(StudentDatabaseWeb db) {
-		this.db = db;
-	}
-
 	@GET
 	@WebMethod
 	public ModelView home() {
 		Map<String, Object> model = new HashMap<String, Object>();
 
-		model.put("schoolName", db.getSchoolName());
 		return new ModelView(model, "/home.html");
 	}
 
