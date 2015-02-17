@@ -37,6 +37,18 @@ public class ModifyService {
 	public ModifyService(StudentDao dao) {
 		this.dao = dao;
 	}
+	
+	/**
+	 * MODIFY HOME page which only has header of options. Body is blank
+	 */
+	@Path("")
+	@GET
+	@WebMethod
+	public ModelView modify() {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		return new ModelView(model, "/modifyHome.html");
+	}
 
 	/**
 	 * SEARCH student page. Allows user to enter information (first name, last
@@ -98,126 +110,31 @@ public class ModifyService {
 		return new ModelView(model, "/editStudent.html");
 	}
 
-	/**
-	 * This is the header and buttons that will show up on all modification type
-	 * pages. That is, on the Add, Edit, and Remove pages. Header will have
-	 * button options to go to each page as well as "return home"
-	 */
-	public String modifyPageHeader() {
-
-		StringBuilder sb = new StringBuilder();
-
-		// Header Title
-		sb.append("<html>\n");
-		sb.append("<center><font face = 'verdana'><h1>")
-				.append("MODIFICATIONS").append("</h1></font></center>\n");
-		sb.append("<hr width = '95%' size = '5' color = '#270A33'>");
-
-		// Buttons: Add, Edit, Remove, Home
-		sb.append("<body><blockquote>");
-		sb.append("<form action='http://localhost:8080/home'><input type='submit' value='Return Home' style = 'float: right'></form>");
-		sb.append("<form action='http://localhost:8080/home/modify/remove'><input type='submit' value='Remove a Student' style = 'float: right'></form>");
-		sb.append("<form action='http://localhost:8080/home/modify/edit'><input type='submit' value='Edit a Student' style = 'float: right'></form>");
-		sb.append("<form action='http://localhost:8080/home/modify/add'><input type='submit' value='Add a Student' style = 'float: right'></form>");
-		sb.append("</blockquote></body></html>\n");
-		return sb.toString();
-	}
-
-	/**
-	 * This is the search form with user input fields for First Name, Last Name,
-	 * and Age.
-	 */
-	public String queryingParametersRequired() {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("<html>\n");
-
-		// Query Fields: first name, last name, age
-		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
-		sb.append("<body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("First Name: <input name='firstName' required type='text'/>\n");
-		sb.append(tab).append(
-				"Last Name: <input name='lastName' required type='text'/>\n");
-		sb.append(tab)
-				.append("Age: <input name='age' required type='text'/>\n");
-		sb.append("<input type='submit' />\n");
-		sb.append("</blockquote></font></body></html>\n");
-
-		return sb.toString();
-	}
-
-	public String queryingParameters() {
-
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("<html>\n");
-
-		// Query Fields: first name, last name, age
-		String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
-		sb.append("<body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("First Name: <input name='firstName' type='text'/>\n");
-		sb.append(tab).append(
-				"Last Name: <input name='lastName' type='text'/>\n");
-		sb.append(tab).append("Age: <input name='age' type='text'/>\n");
-		sb.append("<input type='submit' />\n");
-		sb.append("</blockquote></font></body></html>\n");
-
-		return sb.toString();
-	}
-
-	/**
-	 * MODIFY HOME page which only has header of options. Body is blank
-	 */
-	@Path("")
-	@GET
-	@WebMethod
-	public String modify() {
-		return modifyPageHeader();
-	}
 
 	/**
 	 * ADD student page. Has the modify header. Allows user to add students to
 	 * database. User must include First name, Last name, and Age information.
 	 */
-	// TODO: make age into stringAge. Parse it into int in method.
-	// Make pages for when requests don't make sense. When user types in wrong
-	// input type, should be handled. not show E messages. Return content from
-	// page.
-	// Do data input handling in method.
 	@Path("/add")
 	@GET
 	@WebMethod
-	public String modifyAddStudent(@QueryParam("firstName") String firstName,
-			@QueryParam("lastName") String lastName, @QueryParam("age") int age) {
+	public ModelView modifyAddStudent(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName, @QueryParam("ageString") String ageString) {
 
-		StringBuilder sb = new StringBuilder();
+		Map<String, Object> model = new HashMap<String, Object>();
 
-		// Page header
-		sb.append(modifyPageHeader());
-
-		// Input parameters
-		sb.append("<html>\n");
-		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("<br/>").append("ADD").append("<br/>");
-		sb.append(queryingParametersRequired());
-
-		// Return: confirmation that student is added or fail
-		sb.append("<br/><br/><br/>Result:\n");
-
-		if (firstName != null && !firstName.trim().isEmpty()) {
-			dao.addStudentToDatabase(firstName, lastName, age);
-			sb.append("Student has been added to database");
-		} else {
-			sb.append("Failed to add student");
+		Integer ageInt = null;
+		try {
+			if (ageString != null && !ageString.isEmpty()) {
+				ageInt = Integer.parseInt(ageString);
+				dao.addStudentToDatabase(firstName, lastName, ageInt);
+			}
+		} catch (NumberFormatException nfe) {
+			model.put("ageError", "Error: you did not input a number for age");
 		}
-
-		// Close
-		sb.append("</form></blockform></font></html></body></p>\n");
-
-		return sb.toString();
+		
+		return new ModelView(model, "/modifyAdd.html");
+		
 	}
 
 	// /**
@@ -279,14 +196,6 @@ public class ModifyService {
 			@QueryParam("age") String ageString) {
 
 		StringBuilder sb = new StringBuilder();
-
-		sb.append(modifyPageHeader());
-
-		// Search form
-		sb.append("<html>\n");
-		sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-		sb.append("<br/>").append("REMOVE").append("<br/>");
-		sb.append(queryingParameters());
 
 		// Search results
 		sb.append("<br/><br/>").append("Results:<br/><br/>\n");

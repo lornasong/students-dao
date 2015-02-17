@@ -81,7 +81,7 @@
 		<blockquote>
 		
 			<div id = 'label'>
-				<br/>STUDENT ID: ${pKey}
+				<br/>ADD STUDENT
 			</div>
 			
 			<form>
@@ -89,23 +89,21 @@
 		            <tbody>
 		                <tr>
 		                    <td>FIRST NAME</td>
-		                    <td><input name='newFirst' required type='text' value = '${firstName}'/></td>     
+		                    <td><input name='firstName' required type='text'/></td>     
 		                </tr>
 		                <tr>
 		                    <td>LAST NAME</td>
-		                    <td><input name='newLast' required type='text' value = '${lastName}'/></td>
+		                    <td><input name='lastName' required type='text'/></td>
 		                </tr>
 		                <tr>
 		                    <td>AGE</td>
-		                    <td><input name='newAge' required type='text' value = '${age}'/></td>
+		                    <td><input name='ageString' required type='text'/></td>
 		                </tr>
 		            </tbody>
 	        	</table>
 	        	
 	        	<div class = 'actionButtons'>
-	        		<input type='submit' name = 'action' value = 'Update Student' id = 'options'/>
-	        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	        		<input type='submit' name = 'action' value = 'Disenroll Student' id = 'options'/>
+	        		<input type='submit' name = 'action' value = 'Enroll Student' id = 'options'/>
 	        	</div>
 	        	
         	</form>
