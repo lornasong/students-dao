@@ -84,20 +84,22 @@
 				<br/>STUDENT ID: ${pKey}
 			</div>
 			
-			<form>
+			<form method = "post" action = "/home/modify/submitStudent">
+                    <input name='pKey' type='hidden' value = '${pKey}'/>     
+			
 				<table>
 		            <tbody>
 		                <tr>
 		                    <td>FIRST NAME</td>
-		                    <td><input name='newFirst' required type='text' value = '${firstName}'/></td>     
+		                    <td><input name='newFirst' required='true' type='text' value = '${firstName}'/></td>     
 		                </tr>
 		                <tr>
 		                    <td>LAST NAME</td>
-		                    <td><input name='newLast' required type='text' value = '${lastName}'/></td>
+		                    <td><input name='newLast' required='true' type='text' value = '${lastName}'/></td>
 		                </tr>
 		                <tr>
 		                    <td>AGE</td>
-		                    <td><input name='newAge' required type='text' value = '${age}'/></td>
+		                    <td><input name='newAge' required='true' type='text' value = '${age}'/></td>
 		                </tr>
 		            </tbody>
 	        	</table>

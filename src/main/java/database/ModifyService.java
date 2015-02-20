@@ -1,5 +1,7 @@
 package database;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,16 +9,17 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.Response;
+import javax.ws.rs.core.Context;
 
 import com.j256.simplewebframework.freemarker.ModelView;
+import com.j256.simplewebframework.util.ResponseUtils;
 
 /**
  * Includes all web services with url "/home/modify" base. Which includes the
@@ -25,7 +28,6 @@ import com.j256.simplewebframework.freemarker.ModelView;
  * Allows users to perform these three actions on their database
  * 
  * @author lornasong
- *
  */
 @WebService
 @Produces({ "text/html" })
@@ -37,17 +39,44 @@ public class ModifyService {
 	public ModifyService(StudentDao dao) {
 		this.dao = dao;
 	}
-	
+
 	/**
-	 * MODIFY HOME page which only has header of options. Body is blank
+	 * HOME page which only has header of options. Body is blank
 	 */
 	@Path("")
 	@GET
 	@WebMethod
-	public ModelView modify() {
+	public ModelView modifyHome() {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		return new ModelView(model, "/modifyHome.html");
+	}
+
+	/**
+	 * ADD student page. Has the modify header. Allows user to add students to
+	 * database. User must include First name, Last name, and Age information.
+	 */
+	@Path("/add")
+	@GET
+	@WebMethod
+	public ModelView add(@QueryParam("firstName") String firstName,
+			@QueryParam("lastName") String lastName,
+			@QueryParam("ageString") String ageString) {
+
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		Integer ageInt = null;
+		try {
+			if (ageString != null && !ageString.isEmpty()) {
+				ageInt = Integer.parseInt(ageString);
+				dao.addStudentToDatabase(firstName, lastName, ageInt);
+			}
+		} catch (NumberFormatException nfe) {
+			model.put("ageError", "Error: you did not input a number for age");
+		}
+
+		return new ModelView(model, "/modifyAdd.html");
+
 	}
 
 	/**
@@ -81,107 +110,69 @@ public class ModifyService {
 		return new ModelView(model, "/modifySearch.html");
 	}
 
+	/**
+	 * EDIT page once a student is selected. Display's student's current
+	 * information. Allows user to edit first name, last name, and age. Or
+	 * allows user to remove student.
+	 */
 	@Path("/editStudent/{pKey}")
 	@GET
 	@WebMethod
-	public ModelView edit(@PathParam("pKey") Integer pKey,
-			@QueryParam("newFirst") String newFirst,
-			@QueryParam("newLast") String newLast,
-			@QueryParam("newAge") String ageString,
-			@QueryParam("action") String action) {
+	public ModelView edit(@PathParam("pKey") Integer pKey) {
 
 		Student selectedStudent = dao.getStudentByPKey(pKey);
+
 		Map<String, Object> model = new HashMap<String, Object>();
 		model.put("pKey", pKey);
 		model.put("firstName", selectedStudent.getFirstName());
 		model.put("lastName", selectedStudent.getLastName());
 		model.put("age", selectedStudent.getAge());
-		
-		Integer ageInt = null;
-		try {
-			if (ageString != null && !ageString.isEmpty()) {
-				ageInt = Integer.parseInt(ageString);
-				dao.updateStudentInformation(pKey, newFirst, newLast, ageInt);
-			}
-		} catch (NumberFormatException nfe) {
-			model.put("ageError", "Error: you did not input a number for age");
-		}
 
 		return new ModelView(model, "/editStudent.html");
 	}
 
-
-	/**
-	 * ADD student page. Has the modify header. Allows user to add students to
-	 * database. User must include First name, Last name, and Age information.
-	 */
-	@Path("/add")
-	@GET
+	@Path("/submitStudent")
+	@POST
 	@WebMethod
-	public ModelView modifyAddStudent(@QueryParam("firstName") String firstName,
-			@QueryParam("lastName") String lastName, @QueryParam("ageString") String ageString) {
+	public void submit(@FormParam("pKey") Integer pKey,
+			@FormParam("newFirst") String newFirst,
+			@FormParam("newLast") String newLast,
+			@FormParam("newAge") String ageString,
+			@FormParam("action") String action,
+			@Context HttpServletResponse response,
+			@Context HttpServletRequest request) throws IOException {
+
+		Student selectedStudent = dao.getStudentByPKey(pKey);
+
+		// Don't use dao to set things. Only use it to store data. Creates weird
+		// dependency
+		// Setting is business logic. Don't put it in dao.
+		selectedStudent.setFirstName(newFirst);
+		selectedStudent.setLastName(newLast);
 
 		Map<String, Object> model = new HashMap<String, Object>();
 
-		Integer ageInt = null;
 		try {
 			if (ageString != null && !ageString.isEmpty()) {
-				ageInt = Integer.parseInt(ageString);
-				dao.addStudentToDatabase(firstName, lastName, ageInt);
+				// in case browser isn't compliant on 'required'
+
+				int ageInt = Integer.parseInt(ageString);
+				selectedStudent.setAge(ageInt);
 			}
 		} catch (NumberFormatException nfe) {
 			model.put("ageError", "Error: you did not input a number for age");
 		}
-		
-		return new ModelView(model, "/modifyAdd.html");
-		
+
+		try {
+			dao.update(selectedStudent);
+		} catch (SQLException e) {
+			System.out.println("Error updating student info");
+			e.printStackTrace();
+		}
+
+		ResponseUtils.sendRelativeRedirect(request, response, "/home/modify/search");
 	}
 
-	// /**
-	// * EDIT FORM opens once a user selects the specific student they want to
-	// * edit. A text box opens for: first name, last name, and age. The default
-	// * original first, last, and age are pre-filled in the fields. User can
-	// * modify and submit changes. After submission, user will receive a
-	// * confirmation.
-	// */
-	// @Path("/edit/form")
-	// @GET
-	// @WebMethod
-	// public String modifyEditForm(@QueryParam("firstName") String firstName,
-	// @QueryParam("lastName") String lastName, @QueryParam("age") int age) {
-	//
-	// String tab = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-	// StringBuilder sb = new StringBuilder();
-	//
-	// sb.append(modifyPageHeader());
-	//
-	// sb.append("<html>\n");
-	// sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-	// sb.append("<br/>").append("EDIT HERE").append("<br/>");
-	//
-	// Student student = db.getStudentByID(idModify);
-	//
-	// // Form with pre-filled values.
-	// sb.append(
-	// "First Name: <input name='firstName' required type='text' value = '")
-	// .append(student.getFirstName()).append("'/>\n");
-	// sb.append(tab)
-	// .append("Last Name: <input name='lastName' required type='text' value = '")
-	// .append(student.getLastName()).append("'/>\n");
-	// sb.append(tab)
-	// .append("Age: <input name='age' required type='text' value = '")
-	// .append(student.getAge()).append("'/>\n");
-	// sb.append("<input type='submit' />\n");
-	//
-	// // Initial check if response is committed. If so, edit!
-	// if (firstName != null && !firstName.trim().isEmpty()) {
-	// sb.append("<br/><br/>").append(
-	// db.editStudentName(student, firstName, lastName, age));
-	// }
-	// sb.append("</blockquote></font></html></body></p>\n");
-	// return sb.toString();
-	// }
-	//
 	/**
 	 * REMOVE student page. Allows user to enter ID of student they would like
 	 * to remove. Once user selects and confirms to remove the student, they
@@ -209,28 +200,4 @@ public class ModifyService {
 
 		return sb.toString();
 	}
-	//
-	// /**
-	// * REMOVE TRUE student page. Confirmation page for when "Remove" button is
-	// * clicked for student.
-	// */
-	// @Path("/remove/true")
-	// @GET
-	// @WebMethod
-	// public String modifyRemoveTrue() {
-	//
-	// StringBuilder sb = new StringBuilder();
-	//
-	// sb.append(modifyPageHeader());
-	//
-	// sb.append("<html>\n");
-	// sb.append("<p><body><font face = 'verdana'><blockquote><form>\n");
-	// sb.append("<br/>").append("REMOVE").append("<br/>");
-	//
-	// sb.append("<br/>").append(db.removeStudentByID(idModify))
-	// .append("<br/>");
-	// sb.append("</blockquote></font></html></body></p>\n");
-	// return sb.toString();
-	// }
-
 }

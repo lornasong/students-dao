@@ -44,7 +44,7 @@ public class Main {
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 		
 		//Stuff for to use Freemarker instead of stringbuilding html
-		//Has errors. Need to press forward twice. Page will render.
+		//Reminder: Has errors. Need to press forward twice. Page will render.
 		FreemarkerHtmlDisplayer displayer = new FreemarkerHtmlDisplayer();
 		FileLocator fileLocator = new FileLocator(new File("target/classes"), new String [] { "index.html" });
 		displayer.setFileLocator(fileLocator);

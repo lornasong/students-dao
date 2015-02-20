@@ -97,7 +97,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
 	 * listToString(getStudentListSorted)
 	 */
-	public QueryBuilder<Student, Integer> getStudentListSorted(String type) {
+	public List<Student> getStudentListSorted(String type) {
 
 		QueryBuilder<Student, Integer> statementBuilder = queryBuilder();
 
@@ -113,7 +113,13 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 			// Default: no sorting.
 		}
 
-		return statementBuilder;
+		try {
+			return statementBuilder.query();
+		} catch (SQLException e) {
+			System.out.println("Error in creating student list for views sorted: " + type);
+			e.printStackTrace();
+		}
+		return null;
 
 	}
 
@@ -124,13 +130,13 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
 	 * listToString(queryByFirstName)
 	 */
-	public QueryBuilder<Student, Integer> queryByFirstName(String firstName) {
+	public List<Student> queryByFirstName(String firstName) {
 		QueryBuilder<Student, Integer> statementBuilder = queryBuilder();
 		try {
 
 			statementBuilder.where().like(Student.FIRST_NAME,
 					"%" + firstName + "%");
-			return statementBuilder;
+			return statementBuilder.query();
 
 		} catch (SQLException e) {
 			System.out.println("Error: querying first name");
@@ -146,13 +152,13 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
 	 * listToString(queryByLastName)
 	 */
-	public QueryBuilder<Student, Integer> queryByLastName(String lastName) {
+	public List<Student> queryByLastName(String lastName) {
 		QueryBuilder<Student, Integer> statementBuilder = queryBuilder();
 		try {
 
 			statementBuilder.where().like(Student.LAST_NAME,
 					"%" + lastName + "%");
-			return statementBuilder;
+			return statementBuilder.query();
 
 		} catch (SQLException e) {
 			System.out.println("Error: querying last name");
@@ -168,7 +174,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * Use in with method listToString(QueryBuilder) to render on webpage. E.G.
 	 * listToString(queryByAge)
 	 */
-	public QueryBuilder<Student, Integer> queryByAge(String ageString) {
+	public List<Student> queryByAge(String ageString) {
 
 		QueryBuilder<Student, Integer> statementBuilder = queryBuilder();
 
@@ -184,7 +190,7 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 				int age = Integer.parseInt(ageString);
 				statementBuilder.where().like(Student.AGE, age);
 			}
-			return statementBuilder;
+			return statementBuilder.query();
 
 		} catch (SQLException e) {
 			System.out.println("Error: querying age");
@@ -240,36 +246,6 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 			System.out.println("Error: age string cannot be parsed to int");
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	/**
-	 * RETURNS STUDENTLIST AS STRING in html format. Loops through list. If list
-	 * is empty, returns specific message notifying user.
-	 */
-	public String listToString(QueryBuilder<Student, Integer> statementBuilder) {
-
-		List<Student> studentList;
-
-		try {
-			studentList = query(statementBuilder.prepare());
-
-			if (studentList.isEmpty()) {
-				return "No Students Match Your Search";
-			}
-
-			StringBuilder sb = new StringBuilder();
-			for (Student s : studentList) {
-				sb.append(s.toString()).append("<br/>");
-			}
-
-			return sb.toString();
-
-		} catch (SQLException e) {
-			System.out.println("Issue printing list");
-			e.printStackTrace();
-		}
-
 		return null;
 	}
 }
