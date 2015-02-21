@@ -37,7 +37,6 @@ public class Main {
 		// register our service that handles requests from simple-web-framework
 		serviceHandler.registerWebService(new HomeService());
 		serviceHandler.registerWebService(new ModifyService(daoMain.getStudentDao()));
-		serviceHandler.registerWebService(new SearchService(daoMain.getStudentDao()));
 		serviceHandler.registerWebService(new ViewService(daoMain.getStudentDao()));
 		
 		// register a displayer of String results

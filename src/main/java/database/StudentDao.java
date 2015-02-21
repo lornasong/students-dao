@@ -50,47 +50,6 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	}
 
 	/**
-	 * DELETES A STUDENT by using primary key to identify the particular student
-	 * needed to be deleted.
-	 */
-	public boolean deleteStudentFromDatabase(int pKey) {
-
-		try {
-			Student student = getStudentByPKey(pKey);
-			delete(student);
-			return true;
-		} catch (SQLException e) {
-			System.out.println("Error: unsuccessful deleting student");
-			e.printStackTrace();
-			return false;
-		}
-	}
-
-	/**
-	 * MODIFIES STUDENT information: first name, last name, age. Identify
-	 * student to modify by pKey. User submits new information for student. If
-	 * only one field has changed, include original information of fields that
-	 * have not changed.
-	 */
-	public Student updateStudentInformation(int pKey, String newFirstName,
-			String newLastName, int newAge) {
-
-		Student student = getStudentByPKey(pKey);
-		student.setFirstName(newFirstName);
-		student.setLastName(newLastName);
-		student.setAge(newAge);
-
-		try {
-			update(student);
-			return student;
-		} catch (SQLException e) {
-			System.out.println("Error: student info failed to update");
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
 	 * RETURNS LIST sorted by variable 'type.' Type options: 'age', 'lastName',
 	 * 'firstName' or default no sorting (sorted by primary key).
 	 * 

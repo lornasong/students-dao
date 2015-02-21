@@ -128,9 +128,33 @@ public class ModifyService {
 		model.put("lastName", selectedStudent.getLastName());
 		model.put("age", selectedStudent.getAge());
 
-		return new ModelView(model, "/editStudent.html");
+		return new ModelView(model, "/modifyEdit.html");
 	}
 
+	@Path("/disenrollStudent")
+	@POST
+	@WebMethod
+	public void disenroll(@FormParam("pKey") Integer pKey,
+			@Context HttpServletResponse response,
+			@Context HttpServletRequest request) throws IOException {
+
+		Student selectedStudent = dao.getStudentByPKey(pKey);
+
+		try{
+			dao.delete(selectedStudent);
+		} catch (SQLException e) {
+			System.out.println("Error updating student info");
+			e.printStackTrace();
+		}
+
+		ResponseUtils.sendRelativeRedirect(request, response, "/home/modify/search");
+	}
+	
+	/**
+	 * REMOVE student page. Allows user to enter ID of student they would like
+	 * to remove. Once user selects and confirms to remove the student, they
+	 * will be linked to /remove_true confirmation page.
+	 */
 	@Path("/submitStudent")
 	@POST
 	@WebMethod
@@ -171,33 +195,5 @@ public class ModifyService {
 		}
 
 		ResponseUtils.sendRelativeRedirect(request, response, "/home/modify/search");
-	}
-
-	/**
-	 * REMOVE student page. Allows user to enter ID of student they would like
-	 * to remove. Once user selects and confirms to remove the student, they
-	 * will be linked to /remove_true confirmation page.
-	 */
-	@Path("/remove")
-	@GET
-	@WebMethod
-	public String modifyRemoveStudent(
-			@QueryParam("firstName") String firstName,
-			@QueryParam("lastName") String lastName,
-			@QueryParam("age") String ageString) {
-
-		StringBuilder sb = new StringBuilder();
-
-		// Search results
-		sb.append("<br/><br/>").append("Results:<br/><br/>\n");
-		// sb.append(dao.queryByMultipleFields(firstName,
-		// lastName, ageString)));
-		// idModify = idInt;
-		// sb.append("<form action='http://localhost:8080/home/modify/remove/true'><input type='submit' value='Remove'></form>");
-
-		// Close
-		sb.append("</blockquote></font></html></body></p>\n");
-
-		return sb.toString();
 	}
 }

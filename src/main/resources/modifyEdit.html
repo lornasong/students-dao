@@ -85,7 +85,7 @@
 			</div>
 			
 			<form method = "post" action = "/home/modify/submitStudent">
-                    <input name='pKey' type='hidden' value = '${pKey}'/>     
+                <input name='pKey' type='hidden' value = '${pKey}'/>     
 			
 				<table>
 		            <tbody>
@@ -106,15 +106,20 @@
 	        	
 	        	<div class = 'actionButtons'>
 	        		<input type='submit' name = 'action' value = 'Update Student' id = 'options'/>
-	        		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-	        		<input type='submit' name = 'action' value = 'Disenroll Student' id = 'options'/>
 	        	</div>
-	        	
         	</form>
-			
+        	
+
 		</blockquote>
 	</div>
 	
 	</blockquote>
+	
+	        	<div class = 'actionButtons'>
+        		<form method = "post" action = "/home/modify/disenrollStudent">
+        			<input name='pKey' type='hidden' value = '${pKey}'/>
+        			<input type='submit' name = 'action' value = 'Disenroll Student' id = 'options'/>
+        		</form>
+        	</div>
 </body>
 </html>
