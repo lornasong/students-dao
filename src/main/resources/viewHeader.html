@@ -1,19 +1,60 @@
 [#ftl]
 <html>
-	<body style = "font-family: Verdana">
-			
-		<h1>${viewType}</h1>
-		<hr width = '95%' size = '5' color = '#270A33' align = 'center'>
+<head>
+	<link rel = "stylesheet" type = "text/css" href = "https://fonts.googleapis.com/css?family=Marck+Script">
+	<style>
+		#options{
+			width: 75px;
+			height: 75px;
+			color: #FFFFFF;
+			background: #C14F3C;
+			border: none;
+			padding: 2px;
+			margin: 10px;
+		}
+		#options:hover{
+			background: #101E59;
+			color: #FFFFFF;
+			border: none;
+		}
+		h1{
+			display: inline;
+			margin-right: 200px;
+		}
+		form{
+			display: inline;
+		}
+		a{
+			position: absolute;
+			bottom: 17;
+			text-decoration: none;
+			margin-left: 50px;
+			color: #000000;
+			font-family: 'Marck Script', cursive;
+			font-size: 24px;
+		}
+		a:hover{
+			color: #AFB6D3;
+		}
+		div{
+			position: relative;
+		}
+	</style>
+</head>
+<body style = "font-family: Helvetica">
+	<blockquote>
+		<div>
+		<h1>
+			VIEW BY:
+		</h1>
+
+		<form action='/home/viewSubmit'><input type='submit' value='Last Name' id = 'options'></form>
+		<form action='/home/view_id'><input type='submit' value='ID' id = 'options'></form>
+		<form action='/home/view_age'><input type='submit' value='Age' id = 'options'></form>
+		<a href ='/home'>Return Home...</a>
 		
-		<p>
-			<blockquote>
-				<br/>
-				<style type='text/css'> form {display: inline;}</style>
-				<form action='http://localhost:8080/home'><input type='submit' value='Return Home' style = 'float: right'></form>
-				<form action='http://localhost:8080/home/view_lastname'><input type='submit' value='View By Last Name'style = 'float: right'></form>
-				<form action='http://localhost:8080/home/view_id'><input type='submit' value='View By ID' style = 'float: right'></form>
-				<form action='http://localhost:8080/home/view_age'><input type='submit' value='View By Age'style = 'float: right'></form>				
-			</blockquote>
-		</p>
-	</body>
+		<hr width = '650px' size = '2' color = '#AFB6D3' align = 'left'>
+		</div>				
+	</blockquote>
+</body>
 </html>

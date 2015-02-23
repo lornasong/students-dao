@@ -1,8 +1,16 @@
 package database;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+
+import com.j256.simplewebframework.freemarker.ModelView;
 
 /**
  * Provides a web view of the students enrolled based on id, age, or lastname.
@@ -21,37 +29,31 @@ public class ViewService {
 	public ViewService(StudentDao dao) {
 		this.dao = dao;
 	}
-
 	
-//	/**
-//	 * Default page. View/Export student database by ID
-//	 */
-//	@Path("/view_id")
-//	@GET
-//	@WebMethod
-//	public ModelView viewById() {
-//		Map<String, Object> model = new HashMap<String, Object>();
-//
-//		model.put("viewType", "VIEW BY ID");
-//		model.put("exportCsv", db.saveDataAsCsv());
-//		model.put("listBy", db.getStudentListById());
-//		return new ModelView(model, "/view.html");
-//	}
-//
-//	/**
-//	 * View/Export student database by last name
-//	 */
-//	@Path("/view_lastname")
-//	@GET
-//	@WebMethod
-//	public ModelView viewByLastName() {
-//		Map<String, Object> model = new HashMap<String, Object>();
-//
-//		model.put("viewType", "VIEW BY LAST NAME");
-//		model.put("exportCsv", db.saveDataAsCsv());
-//		model.put("listBy", db.getStudentListByLastName());
-//		return new ModelView(model, "/view.html");
-//	}
+	/**
+	 * Default page. View/Export student database by ID
+	 */
+	@Path("/view")
+	@GET
+	@WebMethod
+	public ModelView viewHome() {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		return new ModelView(model, "/viewHome.html");
+	}
+
+	/**
+	 * View/Export student database by last name
+	 */
+	@Path("/viewSubmit")
+	@GET
+	@WebMethod
+	public ModelView submit(@FormParam("viewType") String viewType) {
+		Map<String, Object> model = new HashMap<String, Object>();
+
+		model.put("listBy", viewType);
+		return new ModelView(model, "/viewList.html");
+	}
 
 	/**
 	 * View/Export student database by age
