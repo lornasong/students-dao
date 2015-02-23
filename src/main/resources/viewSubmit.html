@@ -8,7 +8,9 @@
 			
 	<div style = "margin-top: 50px">
 		<blockquote>
-			${listBy}
+		[#list viewTypeList as student]
+			${student.firstName}
+		[/#list]
 		</blockquote>
 	</div>
 		

@@ -9,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 
 import com.j256.simplewebframework.freemarker.ModelView;
 
@@ -36,7 +37,7 @@ public class ViewService {
 	@Path("/view")
 	@GET
 	@WebMethod
-	public ModelView viewHome() {
+	public ModelView viewHome(@QueryParam("viewType") String viewType) {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		return new ModelView(model, "/viewHome.html");
@@ -45,14 +46,15 @@ public class ViewService {
 	/**
 	 * View/Export student database by last name
 	 */
-	@Path("/viewSubmit")
+	@Path("/view/submit")
 	@GET
 	@WebMethod
 	public ModelView submit(@FormParam("viewType") String viewType) {
 		Map<String, Object> model = new HashMap<String, Object>();
 
-		model.put("listBy", viewType);
-		return new ModelView(model, "/viewList.html");
+		model.put("viewTypeList", dao.getStudentListSorted(viewType));
+		
+		return new ModelView(model, "/viewSubmit.html");
 	}
 
 	/**

@@ -44,15 +44,26 @@
 <body style = "font-family: Helvetica">
 	<blockquote>
 		<div>
+		
 		<h1>
 			VIEW BY:
 		</h1>
-
-		<form action='/home/viewSubmit'><input type='submit' value='Last Name' id = 'options'></form>
-		<form action='/home/view_id'><input type='submit' value='ID' id = 'options'></form>
-		<form action='/home/view_age'><input type='submit' value='Age' id = 'options'></form>
-		<a href ='/home'>Return Home...</a>
 		
+		<form action = "/home/view/submit">
+            <input name='viewType' type='hidden' value = 'age'/>   	
+	        <input type='submit' value = 'Age' id = 'options'/>
+       	</form>
+		<form action = "/home/view/submit">
+            <input name='viewType' type='hidden' value = 'id'/>   	
+	        <input type='submit' value = 'ID' id = 'options'/>
+       	</form>
+		<form action = "/home/view/submit">
+            <input name='viewType' type='hidden' value = 'lastName'/>   	
+	        <input type='submit' value = 'Last Name' id = 'options'/>
+       	</form>
+       	
+       	<a href ='/home'>Return Home...</a>
+
 		<hr width = '650px' size = '2' color = '#AFB6D3' align = 'left'>
 		</div>				
 	</blockquote>
