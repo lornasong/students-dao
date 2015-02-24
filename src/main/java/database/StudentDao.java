@@ -1,5 +1,9 @@
 package database;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,12 +12,10 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 
 public class StudentDao extends BaseDaoImpl<Student, Integer> {
-	
+
 	public StudentDao(ConnectionSource connectionSource) throws SQLException {
 		super(connectionSource, Student.class);
 	}
-
-
 
 	/**
 	 * ADDS A TUPLE into mySQL database for a student using first name, last
@@ -75,7 +77,9 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 		try {
 			return statementBuilder.query();
 		} catch (SQLException e) {
-			System.out.println("Error in creating student list for views sorted: " + type);
+			System.out
+					.println("Error in creating student list for views sorted: "
+							+ type);
 			e.printStackTrace();
 		}
 		return null;
@@ -172,8 +176,8 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 	 * AND (lastName IS NULL OR LAST_NAME = lastName) AND (age IS NULL OR AGE =
 	 * age)
 	 */
-	public List<Student> queryByMultipleFields(
-			String firstName, String lastName, Integer age) {
+	public List<Student> queryByMultipleFields(String firstName,
+			String lastName, Integer age) {
 
 		QueryBuilder<Student, Integer> allBuilder = queryBuilder();
 
@@ -188,7 +192,8 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 				// user inputed something, return matches if input like number
 			} else {
 
-				//int age = Integer.parseInt(ageString);//put outside. conversions
+				// int age = Integer.parseInt(ageString);//put outside.
+				// conversions
 
 				allBuilder.where()
 						.like(Student.LAST_NAME, "%" + lastName + "%").and()
@@ -206,5 +211,33 @@ public class StudentDao extends BaseDaoImpl<Student, Integer> {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public String exportToCsv(List<Student> studentList) {
+		String filename = "/Users/lornasong/Desktop/" + "SchoolExport"
+				+ ".csv";
+
+		File file = new File(filename);
+
+		try {
+
+			FileWriter fw = new FileWriter(file);
+			PrintWriter out = new PrintWriter(fw);
+
+			out.println("ID, Last Name, First Name, Age");
+
+			for (Student s : studentList) {
+				out.println(s.getPKey() + "," + s.getLastName() + ", "
+						+ s.getFirstName() + ", " + s.getAge());
+			}
+
+			out.close();
+			fw.close();
+			return null;
+
+		} catch (IOException e) {
+			System.out.println("Error with exporting to csv");
+			return null;
+		}
 	}
 }
