@@ -38,11 +38,11 @@
 		}
 	</style>
 </header>
-<body style = "font-family: Helvetica">
+<body style = 'font-family: Helvetica'>
 
-	[#include "/target/classes/viewHeader.html"]
+	[#include '/target/classes/viewHeader.html']
 	<blockquote>
-		<div style = "margin-top: 75px">	
+		<div style = 'margin-top: 75px'>	
 			<table>
 				<thead>
 					<tr>
@@ -65,9 +65,9 @@
 			</table>
 		</div>
 		<br/>
-		<form method = "post" action = "/home/view/export">
+		<form method = 'post' action = '/home/view/export'>
             <input name='viewType' type='hidden' value = ${viewType}/>   	
-	        <input type='submit' value = 'Export To CSV' class = "export"/>
+	        <input type='submit' value = 'Export To CSV' class = 'export'/>
        	</form>
 	</blockquote>
 </body>
