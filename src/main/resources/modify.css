@@ -1,6 +1,28 @@
-<style type="text/css">
-
-h1{
-	color: #101E59;
+#options{
+	display: inline-block;
+	width: 125px;
+	color: #FFFFFF;
+	background: #C14F3C;
+	border: none;
+	padding: 2px;
 }
-</style>
+#options:hover{
+	background: #101E59;
+	color: #FFFFFF;
+	border: none;
+}
+.right{
+	position: relative;
+	width: 20%;
+	float: right;
+}
+#left{
+	position: relative;
+	width: 75%;
+	float: left;
+}
+#label{
+	margin-top: 20px;
+	margin-bottom: 15px;
+	font-weight: bold;
+}
