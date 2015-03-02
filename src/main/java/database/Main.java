@@ -72,7 +72,7 @@ public class Main {
 		localResourceHandler.setFileLocator(fileLocator);
 		localResourceHandler.setDefaultDisplayer(new FileResultDisplayer());
 		Map<String, ResultDisplayer> extMap = new HashMap<String, ResultDisplayer>();
-		extMap.put("html", freeMarkerDisplayer);
+		extMap.put("html", freeMarkerDisplayer);//don't use default displayer for html.
 		localResourceHandler.setFileExtensionDisplayers(extMap);
 
 		
