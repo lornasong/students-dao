@@ -26,7 +26,7 @@ public class HomeService {
 	public ModelView home() {
 		Map<String, Object> model = new HashMap<String, Object>();
 
-		return new ModelView(model, "/home.html");
+		return new ModelView(model, "home.html");
 	}
 
 	@GET

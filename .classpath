@@ -12,5 +12,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/simplewebframework"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

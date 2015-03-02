@@ -19,6 +19,7 @@ import com.j256.simplewebframework.resource.FileLocator;
 import com.j256.simplewebframework.resource.LocalResourceHandler;
 
 import freemarker.template.Configuration;
+import freemarker.template.Version;
 
 public class Main {
 
@@ -51,14 +52,18 @@ public class Main {
 		serviceHandler.registerResultDisplayer(new StringResultDisplayer());
 
 		// Stuff for to use Freemarker instead of stringbuilding html
-		// Reminder: Has errors. Need to press forward twice. Page will render.
-		FreemarkerHtmlDisplayer htmlDisplayer = new FreemarkerHtmlDisplayer();
-		FileLocator fileLocator = new FileLocator(new File("target/classes"),
+		FreemarkerHtmlDisplayer freeMarkerDisplayer = new FreemarkerHtmlDisplayer();
+		
+		File templateDir = new File("src/main/resources");
+		FileLocator fileLocator = new FileLocator(templateDir,
 				new String[] { "index.html" });
-		htmlDisplayer.setFileLocator(fileLocator);
-		Configuration configuration = new Configuration();
-		htmlDisplayer.setTemplateConfig(configuration);
-		serviceHandler.registerResultDisplayer(htmlDisplayer);
+		freeMarkerDisplayer.setFileLocator(fileLocator);
+		Configuration freeMarkerConfig = new Configuration(
+				new Version("2.3.22"));
+		freeMarkerConfig.setDirectoryForTemplateLoading(templateDir);
+		freeMarkerDisplayer.setTemplateConfig(freeMarkerConfig);
+		
+		serviceHandler.registerResultDisplayer(freeMarkerDisplayer);
 		serviceHandler.registerResultDisplayer(new JsonResultDisplayer());
 		
 		// This handler displays css files, jpegs, etc that don't need to be
@@ -67,8 +72,10 @@ public class Main {
 		localResourceHandler.setFileLocator(fileLocator);
 		localResourceHandler.setDefaultDisplayer(new FileResultDisplayer());
 		Map<String, ResultDisplayer> extMap = new HashMap<String, ResultDisplayer>();
-		extMap.put("html", htmlDisplayer);
+		extMap.put("html", freeMarkerDisplayer);
+		localResourceHandler.setFileExtensionDisplayers(extMap);
 
+		
 		// Handlers
 		HandlerCollection handlers = new HandlerCollection();
 		handlers.addHandler(serviceHandler);
