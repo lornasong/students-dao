@@ -1,4 +1,34 @@
-#options{
+/* COLOR HEXADECMIAL REFERENCE
+Gray/Blue:	#AFB6D3
+Red:		#C14F3C
+Dark Blue:	#101E59
+*/
+
+body{
+	font-family: Helvetica;
+}
+
+/*Header styling*/
+
+#header-bar{
+	margin-left: 0;
+	width: 500px;
+	border-top: 1px solid #AFB6D3;
+}
+
+/*Navigation content*/
+#nav-menu{
+	position: relative;
+	width: 20%;
+	float: right;
+}
+#nav-header{
+	padding: 3px;
+}
+#nav-button-container{
+	padding: 5px;
+}
+.nav-button{
 	display: inline-block;
 	width: 125px;
 	color: #FFFFFF;
@@ -6,17 +36,13 @@
 	border: none;
 	padding: 2px;
 }
-#options:hover{
+.nav-button:hover{
 	background: #101E59;
 	color: #FFFFFF;
 	border: none;
 }
-.right{
-	position: relative;
-	width: 20%;
-	float: right;
-}
-#left{
+/*Main content*/
+#main-content{
 	position: relative;
 	width: 75%;
 	float: left;

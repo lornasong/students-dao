@@ -3,39 +3,39 @@
 <head>
 	<link  rel = 'stylesheet' type = 'text/css' href = '/modify.css'/>
 </head>
-<body style = 'font-family: Helvetica'>
+<body>
 	<blockquote>
 	
 	<!--TITLE-->
 	<h1>
 		MODIFICATIONS
-		<hr width = '500px' size = '2' color = '#AFB6D3' align = 'left'>
 	</h1>
+	<hr id = 'header-bar' color = '#AFB6D3'/>
+
 	
-	<!--Right-Side OPTIONS-->
-	<div class = 'right'>
-	
-		<div style = 'padding: 3px'>
+	<!--Navigation Menu-->
+	<div id = 'nav-menu'>
+		<div id = 'nav-header'>
 			OPTIONS			
 		</div>
 		
-		<hr width = '80%' size = '2' color = '#AFB6D3' style = 'margin-bottom: 15px' align = 'left'>
+		<hr width = '80%' size = '2' color = '#AFB6D3' style = 'margin-bottom: 15px' align = 'left'/>
 	
-		<div style = 'padding: 5px'>
+		<div id = 'nav-button-container'>
 			<form action='/home/modify/add'>
-			<input type='submit' value='Add a Student' id = 'options'/>
+				<input type='submit' value='Add a Student' class = 'nav-button'/>
 			</form>
 			<form action='/home/modify/search'>
-			<input type='submit' value='Search for a Student' id = 'options'/>
+				<input type='submit' value='Search for a Student' class = 'nav-button'/>
 			</form>
 			<form action='/home'>
-			<input type='submit' value='Return Home' id = 'options'/>
+				<input type='submit' value='Return Home' class = 'nav-button'/>
 			</form>
 		</div>
 	</div>
 	
 	<!--Left-Side-Top SEARCH-->
-	<div id = 'left'>
+	<div id = 'main-content'>
 		<blockquote>
 			Choose to the right...
 		</blockquote>
