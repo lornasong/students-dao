@@ -8,15 +8,14 @@ body{
 	font-family: Helvetica;
 }
 
-/*Header styling*/
-
+/*HEADER STYLING*/
 #header-bar{
 	margin-left: 0;
 	width: 500px;
 	border-top: 1px solid #AFB6D3;
 }
 
-/*Navigation content*/
+/*NAVIGATION STYLING*/
 #nav-menu{
 	position: relative;
 	width: 20%;
@@ -71,7 +70,7 @@ table{
     width: 750px;
 }
 
-/*SEARCH page specific content*/
+/*SEARCH PAGE - SPECIFIC MAIN CONTENT*/
 #search-header{
 	font-weight: normal;
 	text-align: left;
@@ -91,7 +90,7 @@ table{
 	width: 60px;
 }
 
-/*ADD & EDIT page specific content*/
+/*ADD & EDIT PAGE - SPECIFIC MAIN CONTENT*/
 #student-box{
 	border: 2px solid #AFB6D3;
 }

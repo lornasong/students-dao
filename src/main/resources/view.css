@@ -1,0 +1,97 @@
+/* COLOR HEXADECMIAL REFERENCE
+Gray/Blue:	#AFB6D3
+Red:		#C14F3C
+Dark Blue:	#101E59
+*/
+
+body{
+	font-family: Helvetica;
+}
+
+/*HEADER STYLING*/
+h1{
+	display: inline;
+	margin-right: 200px;
+}
+#header-bar{
+	margin-left: 0;
+	width: 650px;
+	border-top: 1px solid #AFB6D3;
+}
+
+/*NAVIGATION STYLING*/
+form{
+	display: inline;
+}
+#nav-menu{
+	position: relative;
+}
+.nav-button{
+	width: 75px;
+	height: 75px;
+	color: #FFFFFF;
+	background: #C14F3C;
+	border: none;
+	padding: 2px;
+	margin: 10px;
+}
+.nav-button:hover{
+	background: #101E59;
+	color: #FFFFFF;
+	border: none;
+}
+#return-home{
+	position: absolute;
+	bottom: 17;
+	text-decoration: none;
+	margin-left: 50px;
+	color: #000000;
+	font-family: 'Marck Script', cursive;
+	font-size: 24px;
+}
+#return-home:hover{
+	color: #AFB6D3;
+}
+
+/*GENERAL STYLING - MAIN CONTENT*/
+#main-content{
+	margin-top: 50px;
+}
+
+/*SUBMIT VIEW STYLING*/
+table{
+    table-layout: fixed;
+    width: 900px;
+}
+th{
+	font-weight: normal;
+	text-align: left;
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #AFB6D3;
+	margin-bottom: 10px;
+	padding: 10px;
+	text-align: center;
+}
+td {
+	text-align: right;
+    border-bottom: 1px dashed #AFB6D3;
+    overflow: hidden;
+    padding-top: 7px;
+}
+.export{
+	display: inline-block;
+	float: right;
+	width: 125px;
+	color: #FFFFFF;
+	background: #C14F3C;
+	border: none;
+	padding: 2px;
+	margin-right: 235px;
+}
+.export:hover{
+	background: #101E59;
+	color: #FFFFFF;
+	border: none;
+}
+
+
