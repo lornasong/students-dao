@@ -1,0 +1,45 @@
+/* COLOR HEXADECMIAL REFERENCE
+Gray/Blue:	#AFB6D3
+Red:		#C14F3C
+Dark Blue:	#101E59
+*/
+
+body{
+	font-family: Helvetica;
+	margin-top: 100px;
+}
+
+/*HEADER STYLING*/
+h1{
+	text-align: center;
+}
+#header-bar{
+	 width: 400px;
+	 border-top: 1px solid #C14F3C;
+}
+/*OPTION BUTTON STYLING*/
+table{
+	margin-left: auto;
+    margin-right: auto;
+}
+button{
+	padding: 10px;
+	width: 200px;
+	height: 200px;
+	color: #C14F3C;
+	font-size: 18px;
+	background: #AFB6D3;
+	border: 2px solid #AFB6D3;
+	margin: 50px;
+}
+button .hover-content{
+	display: none;
+}
+button:hover .no-hover{
+	display: none;
+}
+button:hover .hover-content {
+	display: inline;
+	color: #101E59;
+	clear:left;
+}
