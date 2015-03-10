@@ -1,148 +1,60 @@
 [#ftl]
 <html>
 <head>
-	<!--link type='text/css' rel='stylesheet' href='modify.css'/-->
-	<style>
-		#options{
-			display: inline-block;
-			width: 125px;
-			color: #FFFFFF;
-			background: #C14F3C;
-			border: none;
-			padding: 2px;
-		}
-		#options:hover{
-			background: #101E59;
-			color: #FFFFFF;
-			border: none;
-		}
-		.right{
-			position: relative;
-			width: 20%;
-			float: right;
-		}
-		#left{
-			position: relative;
-			width: 75%;
-			float: left;
-		}
-		#label{
-			margin-top: 20px;
-			margin-bottom: 15px;
-			font-weight: bold;
-		}
-		table{
-		    table-layout: fixed;
-		    width: 750px;
-		}
-		th{
-			font-weight: normal;
-			text-align: left;
-			border-bottom: 1px solid #AFB6D3;
-			margin-bottom: 10px;
-		}
-		td {
-			text-align: left;
-		    border-bottom: 1px dashed #AFB6D3;
-		    overflow: hidden;
-		    padding-top: 5px;
-		}
-		.idCol{
-			width: 150px;
-		}
-		.ageCol{
-			width: 60px;
-		}
-		a{
-			color: #C14F3C;
-			text-decoration: none;
-		}
-		a:hover{
-			color: #101E59;
-			text-decoration: none;
-		}
-	</style>
+	<link  rel = 'stylesheet' type = 'text/css' href = '/modify.css'/>
 </head>
-<body style = 'font-family: Helvetica'>
+<body>
 	<blockquote>
 	
-	<!--TITLE-->
-	<h1>
-		MODIFICATIONS
-		<hr width = '500px' size = '2' color = '#AFB6D3' align = 'left'>
-	</h1>
+	<!-- TITLE & NAVIGATION BAR -->
+	[#include 'modifyPage.html']
 	
-	<!--Right-Side OPTIONS-->
-	<div class = 'right'>
-	
-		<div style = 'padding: 3px'>
-			OPTIONS			
-		</div>
-		
-		<hr width = '80%' size = '2' color = '#AFB6D3' style = 'margin-bottom: 15px' align = 'left'>
-	
-		<div style = 'padding: 5px; '>
-			<form action='/home/modify/add'>
-			<input type='submit' value='Add a Student' id = 'options'/>
-			</form>
-			<form action='/home/modify/search'>
-			<input type='submit' value='Search for a Student' id = 'options'/>
-			</form>
-			<form action='/home'>
-			<input type='submit' value='Return Home' id = 'options'/>
-			</form>
-		</div>
-	</div>
-	
-	<!--Left-Side-Top SEARCH-->
-	<div id = 'left'>
+	<!--MAIN CONTENT-->
+	<div id = 'main-container'>
 		<blockquote>
+		
+			<!--TOP. SEARCH-->
 			<div id = 'label'>
 				<br/>SEARCH
 			</div>
-			
 			<form>
 				First Name&nbsp;&nbsp;&nbsp;<input name='firstName' type='text'/>
 				&nbsp;&nbsp;&nbsp;&nbsp;Last Name&nbsp;&nbsp;&nbsp;<input name='lastName' type='text'/>
 				&nbsp;&nbsp;&nbsp;&nbsp;Age&nbsp;&nbsp;&nbsp;<input name='age' type='text' style = 'width: 35px'/>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value = 'Query' id = 'options'/><br/><br/><br/>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='submit' value = 'Query' class = 'nav-button'/><br/><br/><br/>
 			</form>
-		</blockquote>
-	</div>
-	
-	<!--Left-Side-Bottom RESULTS-->
-	<div id = 'left'>
-	<blockquote>
-		<div id = 'label'>
-			RESULTS
-		</div>
-		
-		<table>
-			<thead>
-				<tr>
-					<th class = 'idCol'>ID</th>
-					<th>First Name</th>
-					<th>Last Name</th>
-					<th class = 'ageCol'>Age</th>
-				</tr>
-			</thead>
-			<tbody>
-				[#list searchList as student]
+			
+			<!--BOTTOM. RESULTS-->
+			<div id = 'label'>
+				RESULTS
+			</div>
+			
+			<table id = 'search-table'>
+				<thead>
 					<tr>
-						<td>
-							&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp
-							<a href = '/home/modify/editStudent/${student.getPKey()?string}'>
-								${student.getPKey()?string}
-							</a>
-						</td>
-						<td>${student.firstName}</td>
-						<td>${student.lastName}</td>
-						<td>${student.age}</td>
+						<th id = 'search-header' class = 'id-col'>ID</th>
+						<th id = 'search-header'>First Name</th>
+						<th id = 'search-header'>Last Name</th>
+						<th id = 'search-header' class = 'age-col'>Age</th>
 					</tr>
-				[/#list]
-			</tbody>
-		</table>
-	</blockquote>
+				</thead>
+				<tbody>
+					[#list searchList as student]
+						<tr>
+							<td class = 'search-td'>
+								&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp
+								<a href = '/home/modify/editStudent/${student.getPKey()?string}'>
+									${student.getPKey()?string}
+								</a>
+							</td>
+							<td class = 'search-td'>${student.firstName}</td>
+							<td class = 'search-td'>${student.lastName}</td>
+							<td class = 'search-td'>${student.age}</td>
+						</tr>
+					[/#list]
+				</tbody>
+			</table>
+		</blockquote>
 	</div>
 	
 	</blockquote>

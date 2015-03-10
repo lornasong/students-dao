@@ -1,89 +1,24 @@
 [#ftl]
 <html>
 <head>
-	<!--link type='text/css' rel='stylesheet' href='modify.css'/-->
-	<style>
-		#options{
-			display: inline-block;
-			width: 125px;
-			color: #FFFFFF;
-			background: #C14F3C;
-			border: none;
-			padding: 2px;
-		}
-		#options:hover{
-			background: #101E59;
-			color: #FFFFFF;
-			border: none;
-		}
-		.right{
-			position: relative;
-			width: 20%;
-			float: right;
-		}
-		#left{
-			position: relative;
-			width: 75%;
-			float: left;
-			border: 2px solid #AFB6D3;
-		}
-		#label{
-			margin-top: 20px;
-			margin-bottom: 15px;
-			font-weight: bold;
-		}
-		table{
-			table-layout: fixed;
-		    width: 750px;
-		}
-		.actionButtons{
-			padding-top: 50px;
-			margin-bottom: 30px;
-		}
-		
-	</style>
+	<link  rel = 'stylesheet' type = 'text/css' href = '/modify.css'/>
 </head>
-<body style = 'font-family: Helvetica'>
+<body>
 	<blockquote>
 	
-	<!--TITLE-->
-	<h1>
-		MODIFICATIONS
-		<hr width = '500px' size = '2' color = '#AFB6D3' align = 'left'>
-	</h1>
-	
-	<!--Right-Side OPTIONS-->
-	<div class = 'right'>
-	
-		<div style = 'padding: 3px'>
-			OPTIONS			
-		</div>
-		
-		<hr width = '80%' size = '2' color = '#AFB6D3' style = 'margin-bottom: 15px' align = 'left'>
-	
-		<div style = 'padding: 5px'>
-			<form action='/home/modify/add'>
-			<input type='submit' value='Add a Student' id = 'options'/>
-			</form>
-			<form action='/home/modify/search'>
-			<input type='submit' value='Search for a Student' id = 'options'/>
-			</form>
-			<form action='/home'>
-			<input type='submit' value='Return Home' id = 'options'/>
-			</form>
-		</div>
-	</div>
-	
-	<!--Left-Side STUDENT INFO-->
+	<!-- TITLE & NAVIGATION BAR -->
+	[#include 'modifyPage.html']
 	
 	
-	<div id = 'left'>
+	<!--MAIN CONTENT. ADD A STUDENT-->
+	<div id = 'main-container'>
+		<div id = 'student-box'>
 		<blockquote>
-		
+			<!-- Header -->
 			<div id = 'label'>
 				<br/>ADD STUDENT
 			</div>
-			
+			<!-- Table of student information -->
 			<form>
 				<table>
 		            <tbody>
@@ -101,16 +36,13 @@
 		                </tr>
 		            </tbody>
 	        	</table>
-	        	
-	        	<div class = 'actionButtons'>
-	        		<input type='submit' name = 'action' value = 'Enroll Student' id = 'options'/>
+	        	<div id = 'submit-button-container'>
+	        		<input type='submit' name = 'action' value = 'Enroll Student' class = 'nav-button'/>
 	        	</div>
-	        	
         	</form>
-			
 		</blockquote>
+		</div>
 	</div>
-	
 	</blockquote>
 </body>
 </html>
